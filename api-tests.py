@@ -2,10 +2,12 @@ import urllib.request
 import json
 from datetime import date, timedelta
 
+from django.conf import settings
+
 # This is the core visual crossing weather query URL
 BaseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/'
 
-ApiKey = 'K3YVFFUCWT3SRNJKWJT9V3S47'
+ApiKey = settings.WEATHER_DATA_API_KEY
 
 
 #UnitGroup sets the units of the output - us or metric

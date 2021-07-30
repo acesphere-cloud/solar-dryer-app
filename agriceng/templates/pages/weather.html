@@ -1,9 +1,22 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load rest_framework %}
 
 {% block title %}Solar Weather App - API{% endblock %}
-
-<h1>Weather Data - Last 7 Days</h1>
+{% block content %}
+</br>
+<form class="vertical" action="{% url 'weatherdata:location' %}" method="post" novalidate>
+    {% csrf_token %}
+    {% render_form query template_pack='rest_framework/vertical' %}
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-primary">Fetch Weather Data</button>
+        </div>
+      </div>
+</form>
+{% if location %}
+<h2>Weather Data for {{ location.name }}: Last 7 Days</h2>
+<h4>Coordinates: {{ location.latitude }}, {{location.longitude }} </h4>
+<h4>Timezone: {{ location.tz }} </h4>
 <table class="table table-hover">
   <thead class="thead-dark">
   <tr>
@@ -36,4 +49,5 @@
   Value Error: {{ alert }}<br/>
   {% empty %}
   {% endfor %}
-  {% endblock %}
+{% endif %}
+{% endblock content %}

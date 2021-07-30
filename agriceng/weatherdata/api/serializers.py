@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from rest_framework import serializers
 
@@ -9,7 +9,7 @@ class Metric:
         self.name = name
         self.type = type
         self.unit = unit
-        self.created = created or datetime.now()
+        self.created = created or timezone.now()
 
 
 class MetricSerializer(serializers.Serializer):
@@ -34,7 +34,7 @@ class MetricSerializer(serializers.Serializer):
 
 class Location:
     def __init__(
-        self, id, address, name, index, latitude, longitude, distance, time, tz, currentConditions, alerts, created=None
+        self, id, address, name, index, latitude, longitude, distance, time, tz, conditions, alerts, created=None
     ):
         self.id = id
         self.address = address
@@ -44,10 +44,10 @@ class Location:
         self.longitude = longitude
         self.distance = distance
         self.time = time
-        self.timezone = tz
-        self.conditions = currentConditions
+        self.tz = tz
+        self.conditions = conditions
         self.alerts = alerts
-        self.created = created or datetime.now()
+        self.created = created or timezone.now()
 
 
 class LocationSerializer(serializers.Serializer):
@@ -58,9 +58,9 @@ class LocationSerializer(serializers.Serializer):
     latitude = serializers.FloatField()
     longitude = serializers.FloatField()
     distance = serializers.FloatField()
-    time = serializers.TimeField()
+    time = serializers.FloatField()
     tz = serializers.CharField()
-    currentConditions = serializers.CharField()
+    conditions = serializers.CharField()
     alerts = serializers.CharField()
     created = serializers.DateTimeField()
 
@@ -86,21 +86,21 @@ class LocationSerializer(serializers.Serializer):
 
 class Weather:
     def __init__(
-        self, wdir, temp, maxt, visibility, wspd, datetimeStr, solarenergy, heatindex, cloudcover, mint, datetime,
+        self, wdir, temp, maxt, visibility, wspd, solarenergy, heatindex, cloudcover, mint, datetime,
         precip, solarradiation, weathertype, snowdepth, sealevelpressure, snow, dew, humidity, precipcover, wgust,
-        conditions, windchill, info,
+        conditions, windchill, info, datetimestr=None,
     ):
         self.wdir = wdir
         self.maxt = maxt
         self.temp = temp
         self.visibility = visibility
         self.wspd = wspd
-        self.datetimestr = datetimeStr
         self.solarenergy = solarenergy
         self.heatindex = heatindex
         self.cloudcover = cloudcover
         self.mint = mint
         self.datetime = datetime
+        self.datetimestr = datetimestr
         self.precip = precip
         self.solarradiation = solarradiation
         self.weathertype = weathertype
@@ -169,5 +169,26 @@ class WeatherSerializer(serializers.Serializer):
         instance.conditions = validated_data.get('conditions', instance.conditions)
         instance.windchill = validated_data.get('windchill', instance.windchill)
         instance.info = validated_data.get('info', instance.info)
+        instance.save()
+        return instance
+
+
+class Query:
+    def __init__(self, query='', created=None):
+        self.query = query
+        self.created = created or timezone.now()
+
+
+class QuerySerializer(serializers.Serializer):
+    location = serializers.CharField(max_length=128, style={'placeholder': 'Enter location to fetch weather data',
+                                                            'hide_label': True})
+    created = serializers.DateTimeField(default=None, style={'input_type': 'hidden', 'hide_label': True})
+
+    def create(self, validated_data):
+        return Query(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.location = validated_data.get('location', instance.location)
+        instance.created = validated_data.get('created', instance.created)
         instance.save()
         return instance
