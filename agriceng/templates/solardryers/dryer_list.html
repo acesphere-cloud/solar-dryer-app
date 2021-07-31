@@ -1,0 +1,56 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Solar Dryers</h2><br/>
+  {% for dryer in dryers %}
+    <div class="container">
+      <div class=row">
+        <h3>{{dryer}} Schematics:</h3>
+        <div class="col align-self-centre">
+          <figure class="figure">
+            <img src="{{ MEDIA_URL }}{{ dryer.diagram }}" width="255" height="255" alt="Diagram Image"
+                 class="img-thumbnail"/>
+            <figcaption class="figure-caption"><p class="h7">Diagram<p></figcaption>
+          </figure>
+          {% if dryer.construct %}
+            <figure class="figure">
+              <img src="{{ MEDIA_URL }}{{ dryer.construct }}" width="255" height="255" alt="Construct Image"
+                   class="img-thumbnail"/>
+              <figcaption class="figure-caption"><p class="h7">Construct</figcaption>
+            </figure>
+          {% endif %}
+          {% if dryer.variation %}
+            <figure class="figure">
+              <img src="{{ MEDIA_URL }}{{ dryer.variation }}" width="255" height="255" alt="Variation Image"
+                   class="img-thumbnail"/>
+              <figcaption class="figure-caption"><p class="h7">Variation</figcaption>
+            </figure>
+          {% endif %}
+          <br/>
+        </div>
+        <div class="list-group">
+          <h4>Notes:</h4>
+          {% for note in notes %}
+            {% if note.dryer == dryer %}
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ note.dryer }} Note:</h5>
+                  <small>Created:{{ note.created }}</small>
+                </div>
+                <p class="mb-1">{{ note.note }}</p>
+                <small>Modified: {{ note.modified }}</small>
+              </a>
+            {% endif %}
+          {% empty %}
+            <p>No Notes for the {{ dryer }} </p>
+            <br/>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <br/>
+    <br/>
+  {% endfor %}
+{% endblock %}
+

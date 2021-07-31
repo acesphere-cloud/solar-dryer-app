@@ -13,7 +13,7 @@
         </div>
       </div>
 </form>
-{% if location %}
+{% if location.items %}
 <h2>Weather Data for {{ location.name }}: Last 7 Days</h2>
 <h4>Coordinates: {{ location.latitude }}, {{location.longitude }} </h4>
 <h4>Timezone: {{ location.tz }} </h4>

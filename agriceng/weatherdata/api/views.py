@@ -68,14 +68,16 @@ class WeatherView(LocationWeatherMixin, APIView):
                     weathertype=measure['weathertype'], snowdepth=measure['snowdepth'],
                     sealevelpressure=measure['sealevelpressure'], snow=measure['snow'], wgust=measure['wgust'],
                     conditions=measure['conditions'], windchill=measure['windchill'],
-                    datetimestr=measure['datetimeStr'] or None,
+                    datetimestr=measure.get('datetimeStr', None),
                 )
                 weather_values.append(weather_value)
         weather_values = WeatherSerializer(data=weather_values, many=True)
         weather_values.is_valid()
+        weather_values.errors
         weather_values.save()
         weather_metrics = MetricSerializer(data=weather_metrics, many=True)
         weather_metrics.is_valid()
+        weather_metrics.errors
         weather_metrics.save()
         return Response({
             'location': location.data,

@@ -56,13 +56,13 @@
               <a class="nav-link" href="{% url 'home' %}">Solar Dryer App<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'weather' %}">Weather Data</a>
+              <a class="nav-link" href="{% url 'weather:location' %}">Weather Data</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'home' %}">Crop Moisture</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'home' %}">Solar Dryers</a>
+              <a class="nav-link" href="{% url 'solardryer:dryers' %}">Solar Dryers</a>
             </li>
             {% if request.user.is_authenticated %}
               <li class="nav-item">

@@ -9,15 +9,13 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-    path(
-        "weather/", TemplateView.as_view(template_name="pages/weather.html"), name="weather"
-    ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("agriceng.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path("weatherdata/", include("agriceng.weatherdata.urls")),
+    path("weather/", include("agriceng.weatherdata.urls", namespace="weather")),
+    path("dryers/", include("agriceng.solardryers.urls", namespace="solardryer")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     # Static file serving when using Gunicorn + Uvicorn for local web socket development
