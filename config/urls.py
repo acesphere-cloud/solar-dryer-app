@@ -14,8 +14,10 @@ urlpatterns = [
     # User management
     path("users/", include("agriceng.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    # Web Apps
     path("weather/", include("agriceng.weatherdata.urls", namespace="weather")),
     path("dryers/", include("agriceng.solardryers.urls", namespace="solardryer")),
+    path("area/", include("agriceng.area.urls", namespace="area")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     # Static file serving when using Gunicorn + Uvicorn for local web socket development
