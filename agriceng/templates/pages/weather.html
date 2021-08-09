@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load rest_framework %}
 
+
 {% block title %}Solar Weather App - API{% endblock %}
 {% block content %}
 </br>
@@ -14,9 +15,15 @@
       </div>
 </form>
 {% if location.items %}
-<h2>Weather Data for {{ location.name }}: Last 7 Days</h2>
+<h2>Historical Weather Data for {{ location.name }}: {{ weather_values|length }} Previous Days</h2>
 <h4>Coordinates: {{ location.latitude }}, {{location.longitude }} </h4>
 <h4>Timezone: {{ location.tz }} </h4>
+{% if temperature %}
+  <h4>Average Temperature: {{ temperature }}</h4>
+{% endif %}
+{% if windspeed %}
+  <h4>Average Windspeed: {{ windspeed }}</h4>
+{% endif %}
 <table class="table table-hover">
   <thead class="thead-dark">
   <tr>
@@ -34,20 +41,15 @@
     {% for values in weather_values %}
       <tr>
         {% for measure, value in values.items %}
-          <td>{{ value }}</td>
+          {% if measure == " Date time" %}
+            <td> {{ value }} </td>
+          {% elif measure != "location" %}
+            <td>{{ value }}</td>
+          {% endif %}
         {% endfor %}
       </tr>
     {% endfor %}
   </tbody>
 </table>
-
-  {% for error, alert in metric_errors %}
-  Metric Error: {{ alert }}<br/>
-  {% empty %}
-  {% endfor %}
-  {% for error, alert in value_errors %}
-  Value Error: {{ alert }}<br/>
-  {% empty %}
-  {% endfor %}
 {% endif %}
 {% endblock content %}

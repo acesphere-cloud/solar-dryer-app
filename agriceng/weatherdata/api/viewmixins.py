@@ -1,6 +1,4 @@
 from datetime import date, timedelta
-import requests
-from requests.exceptions import HTTPError
 
 from django.conf import settings
 
@@ -9,7 +7,7 @@ class LocationWeatherMixin:
     """
     Visual crossing weather data API Query
     """
-    def query_location_weather(self, location):
+    def get_weather_url(self, location):
         # This is the core visual crossing weather query URL
         BaseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/'
 
@@ -27,7 +25,7 @@ class LocationWeatherMixin:
 
         # Params for history only
         this_week = date.today()
-        last_week = this_week - timedelta(days=6)
+        last_week = this_week - timedelta(days=27)
         StartDate = str(last_week)
         EndDate = str(this_week)
 
@@ -51,35 +49,4 @@ class LocationWeatherMixin:
         # Build the entire query
         url = BaseURL + QueryParams + Locations + ApiKey + "&contentType=json"
 
-        print(' - Running query URL: ', url)
-        print()
-
-        try:
-            response = requests.get(url)
-            # A successful request will raise no error
-            # response.raise_for_status()
-        except HTTPError as http_err:
-            response = "HTTP error occurred: {}"
-            return response.format(http_err)
-        except Exception as err:
-            response = "An error occurred: {}"
-            return response.format(err)
-        else:
-            return response.json()
-
-
-# def query_location_weather(location):
-#     locations = '&locations=' + location
-#     # Build the entire query
-#     url = BaseURL + QueryParams + Locations + ApiKey+"&contentType=json"
-#     print(' - Running query URL: ', url)
-#     print()
-#     response = requests.get(url)
-#         # A successful response will raise no error
-#         response.raise_for_status()
-#     except HTTPError as http_err:
-#         print(f'HTTP error occurred: {http_err}')
-#     except Exception as err:
-#         print(f'Other error occurred: {err}')
-#     else:
-#         response = response.json()
+        return url

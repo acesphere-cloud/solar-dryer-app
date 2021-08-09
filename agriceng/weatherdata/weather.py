@@ -1,11 +1,9 @@
 from datetime import date, timedelta
-import requests
-from requests.exceptions import HTTPError
 
 from django.conf import settings
 
 
-def query_nairobi_weather():
+def get_weather_url(location):
 
     # This is the core visual crossing weather query URL
     BaseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/'
@@ -13,10 +11,10 @@ def query_nairobi_weather():
     ApiKey = settings.WEATHER_DATA_API_KEY
 
     # UnitGroup sets the units of the output - us or metric
-    UnitGroup = 'metric'
+    UnitGroup = 'us'
 
     # Locations for the weather data. Multiple locations separated by pipe (|)
-    Locations = 'Nairobi,KE'
+    Locations = location
 
     # FORECAST or HISTORY
     QueryType = 'HISTORY'
@@ -47,37 +45,4 @@ def query_nairobi_weather():
     # Build the entire query
     url = BaseURL + QueryParams + Locations + ApiKey + "&contentType=json"
 
-    print(' - Running query URL: ', url)
-    print()
-
-    try:
-        response = requests.get(url)
-        # A successful request will raise no error
-        response.raise_for_status()
-    except HTTPError as http_err:
-        response = "HTTP error occurred: {}"
-        return response.format(http_err)
-    except Exception as err:
-        response = "An error occurred: {}"
-        return response.format(err)
-    else:
-        return response.json()
-
-
-
-
-# def query_location_weather(location):
-#     locations = '&locations=' + location
-#     # Build the entire query
-#     url = BaseURL + QueryParams + Locations + ApiKey+"&contentType=json"
-#     print(' - Running query URL: ', url)
-#     print()
-#     response = requests.get(url)
-#         # A successful response will raise no error
-#         response.raise_for_status()
-#     except HTTPError as http_err:
-#         print(f'HTTP error occurred: {http_err}')
-#     except Exception as err:
-#         print(f'Other error occurred: {err}')
-#     else:
-#         response = response.json()
+    return url

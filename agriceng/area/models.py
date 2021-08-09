@@ -2,51 +2,57 @@ from django.db import models
 
 
 class Crop(models.Model):
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, unique=True)
     initial_moisture = models.IntegerField()
     final_moisture = models.IntegerField()
     bulk_density = models.IntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name', ]
+
+    def __str__(self):
+        return self.name
 
 
-class Temperature(models.Model):
-    dimensionless_param = models.DecimalField(max_digits=3, decimal_places=2)
-    boiling_point = models.IntegerField()
-    freezing_point = models.IntegerField()
-    radiation_intensity = models.IntegerField()
-    solar_constant = models.IntegerField()
+class Coefficient(models.Model):
+    AIRFLOW = 'airflow'
+    AIRVOLUME = 'air volume'
+    VAPOURIZATION = 'vaporization'
+    FLOWRATE = 'flow rate'
+    COLLECTORAREA = 'collector area'
+    CHIMNEY = 'chimney'
+    DRYINGBED = 'drying bed'
+    EQUATION_CHOICES = [
+        (AIRFLOW, 'Airflow'),
+        (AIRVOLUME, 'Air Volume'),
+        (VAPOURIZATION, 'Vaporization'),
+        (FLOWRATE, 'Flow Rate'),
+        (COLLECTORAREA, 'Collector Area'),
+        (CHIMNEY, 'Chimney'),
+        (DRYINGBED, 'Drying Bed'),
+    ]
+    coefficient = models.CharField(max_length=128, )
+    symbol = models.CharField(max_length=4)
+    value = models.FloatField()
+    equation = models.CharField(max_length=16, choices=EQUATION_CHOICES)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['coefficient', 'equation'], name='common_coefficients')
+        ]
 
-class Pressure(models.Model):
-    partial_pressure = models.IntegerField()
-    heat_capacity = models.IntegerField()
+    def __str__(self):
+        return self.value
 
-
-class Vaporization(models.Model):
-    specific_gass_constant = models.DecimalField(max_digits=4, decimal_places=1)
-    vapour_gass_constant = models.DecimalField(max_digits=4, decimal_places=1)
-    boiling_point = models.IntegerField()
-    critical_pressure = models.IntegerField()
-    critical_temperature = models.IntegerField()
-
-
-class Rate(models.Model):
-    drying_time = models.DurationField(default="24:00:00")
-    air_density = models.DecimalField(max_digits=2, decimal_places=1)
-
-
-class DryerArea(models.Model):
-    efficiency = models.DecimalField(max_digits=4, decimal_places=3)
-    thickness = models.DecimalField(max_digits=3, decimal_places=2)
-
-
-
-
-
-
-
-
-
-
-
-
+    def save(self, *args, **kwargs):
+        # Remove leading and trailing spaces on coefficients
+        coefficient = self.coefficient.strip()
+        # Remove capital letters on coefficients
+        self.coefficient = coefficient.lower()
+        # Call the "real" save() method.
+        super().save(*args, **kwargs)
 

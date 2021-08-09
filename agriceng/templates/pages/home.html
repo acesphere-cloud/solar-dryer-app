@@ -1,1 +1,35 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %}Solar Dryer Design{% endblock %}
+
+{% block content %}
+  <h1>Generate Solar Dryer Design Specifications</h1>
+  <form class="form-vertical" method="post" action="{% url 'area:solar_dryer' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Design Dryer</button>
+    </div>
+    <br/>
+  </form>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      {% if temperature %}
+        <p>Average Temperature, {{ location.address }}: {{ temperature }}</p>
+        <p> Timezone: {{ location.tz }} </p>
+        <p>Coordinates: {{ location.latitude }}, {{ location.longitude }} </p>
+      {% endif %}
+      {% if wind_speed %}
+        <p> Average Wind Speed, {{ location.name }}: {{ wind_speed }} </p>
+      {% endif %}
+      {% if airflow %}
+      <p> Temperature Diff: {{ airflow.temperature_diff }} </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

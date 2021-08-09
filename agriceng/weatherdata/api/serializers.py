@@ -86,96 +86,38 @@ class LocationSerializer(serializers.Serializer):
 
 class Weather:
     def __init__(
-        self, wdir, temp, maxt, visibility, wspd, solarenergy, heatindex, cloudcover, mint, datetime,
-        precip, solarradiation, weathertype, snowdepth, sealevelpressure, snow, dew, humidity, precipcover, wgust,
-        conditions, windchill, info, datetimestr=None,
+        self, temp, wspd, info, location, datetime,
     ):
-        self.wdir = wdir
-        self.maxt = maxt
         self.temp = temp
-        self.visibility = visibility
         self.wspd = wspd
-        self.solarenergy = solarenergy
-        self.heatindex = heatindex
-        self.cloudcover = cloudcover
-        self.mint = mint
-        self.datetime = datetime
-        self.datetimestr = datetimestr
-        self.precip = precip
-        self.solarradiation = solarradiation
-        self.weathertype = weathertype
-        self.snowdepth = snowdepth
-        self.sealevelpressure = sealevelpressure
-        self.snow = snow
-        self.dew = dew
-        self.humidity = humidity
-        self.precipcover = precipcover
-        self.wgust = wgust
-        self.conditions = conditions
-        self.windchill = windchill
         self.info = info
+        self.location = location
+        self.datetime = datetime
 
 
 class WeatherSerializer(serializers.Serializer):
-    wdir = serializers.DecimalField(max_digits=5, decimal_places=2)
-    cloudcover = serializers.IntegerField()
-    mint = serializers.IntegerField()
     datetime = serializers.DateTimeField(format=None)
-    precip = serializers.IntegerField()
-    solarradiation = serializers.IntegerField()
-    dew = serializers.IntegerField()
-    humidity = serializers.IntegerField()
-    precipcover = serializers.IntegerField()
+    temp = serializers.DecimalField(max_digits=3, decimal_places=1)
+    wspd = serializers.DecimalField(max_digits=4, decimal_places=1)
     info = serializers.CharField()
-    temp = serializers.IntegerField()
-    maxt = serializers.IntegerField()
-    visibility = serializers.IntegerField()
-    wspd = serializers.IntegerField()
-    solarenergy = serializers.IntegerField()
-    heatindex = serializers.IntegerField()
-    weathertype = serializers.CharField()
-    snowdepth = serializers.IntegerField()
-    sealevelpressure = serializers.IntegerField()
-    snow = serializers.IntegerField()
-    wgust = serializers.IntegerField()
-    conditions = serializers.CharField()
-    windchill = serializers.IntegerField()
+    location = LocationSerializer()
 
     def create(self, validated_data):
         return Weather(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.wdir = validated_data.get('wdir', instance.wdir)
         instance.temp = validated_data.get('temp', instance.temp)
-        instance.maxt = validated_data.get('maxt', instance.maxt)
-        instance.visibility = validated_data.get('visibility', instance.visibility)
         instance.wspd = validated_data.get('wspd', instance.wspd)
-        instance.datetimestr = validated_data.get('datetimeStr', instance.datetimestr)
-        instance.solarenergy = validated_data.get('solarenergy', instance.solarenergy)
-        instance.heatindex = validated_data.get('heatindex', instance.heatindex)
-        instance.cloudcover = validated_data.get('cloudcover', instance.cloudcover)
-        instance.mint = validated_data.get('mint', instance.mint)
         instance.datetime = validated_data.get('datetime', instance.datetime)
-        instance.precip = validated_data.get('precip', instance.precip)
-        instance.solarradiation = validated_data.get('solarradiation', instance.solarradiation)
-        instance.weathertype = validated_data.get('weathertype', instance.weathertype)
-        instance.snowdepth = validated_data.get('snowdepth', instance.snowdepth)
-        instance.sealevelpressure = validated_data.get('sealevelpressure', instance.sealevelpressure)
-        instance.snow = validated_data.get('snow', instance.snow)
-        instance.dew = validated_data.get('dew', instance.dew)
-        instance.humidity = validated_data.get('humidity', instance.humidity)
-        instance.precipcover = validated_data.get('precipcover', instance.precipcover)
-        instance.wgust = validated_data.get('wgust', instance.wgust)
-        instance.conditions = validated_data.get('conditions', instance.conditions)
-        instance.windchill = validated_data.get('windchill', instance.windchill)
         instance.info = validated_data.get('info', instance.info)
+        instance.location = validated_data.get('location', instance.location)
         instance.save()
         return instance
 
 
 class Query:
-    def __init__(self, query='', created=None):
-        self.query = query
+    def __init__(self, location='', created=None):
+        self.location = location
         self.created = created or timezone.now()
 
 
