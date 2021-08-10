@@ -1,12 +1,6 @@
-import requests
-from requests.exceptions import HTTPError
-
 from django import forms
 
 from .models import Crop, Coefficient
-from agriceng.weatherdata.api.serializers import Location, Weather, LocationSerializer, WeatherSerializer
-from agriceng.weatherdata.weather import get_weather_url
-
 
 class CropForm(forms.ModelForm):
     """ Form for handling database crop data """
@@ -29,7 +23,7 @@ class CoefficientForm(forms.ModelForm):
         fields = (
             'coefficient',
             'symbol',
-            'value',
+            'equivalent',
             'equation',
         )
 
@@ -49,5 +43,6 @@ class AreaForm(forms.Form):
         help_text="Location of the solar dryer"
     )
     mass = forms.FloatField(
-        help_text="Mass in kilograms"
+        help_text="Initial mass of material to dry in kilograms"
     )
+

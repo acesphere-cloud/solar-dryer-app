@@ -29,6 +29,32 @@
       {% if airflow %}
       <p> Temperature Diff: {{ airflow.temperature_diff }} </p>
       {% endif %}
+      {% if moisture %}
+        <p>Mass of moisture to be removed in kg: {{ moisture.to_remove }}</p>
+      {% endif %}
+      {% if airvolume %}
+        <p>Volume of air required to remove the moisture in m3: {{ airvolume.required }}</p>
+      {% endif %}
+      {% if vaporization %}
+        <p>Enthalpy of vaporization: {{ vaporization.enthalpy }}</p>
+      {% endif %}
+      {% if flowrate %}
+        <p>Volume flow rate (Va/t): {{ flowrate.volume }}</p>
+        <p>Mass flow rate V*1.2: {{ flowrate.mass }}</p>
+      {% endif %}
+      {% if collectorarea %}
+        <p>Collector area: {{ collectorarea.collecting }}</p>
+        <p>Area of Drying Chamber in case of improved dryer: {{ collectorarea.improved_dryer }}</p>
+        <p>Collector Area in the case of improved dryer: {{ collectorarea.improved_dryer }}</p>
+      {% endif %}
+      {% if chimneys %}
+        <p>Number of chimneys: {{ chimneys.number }}</p>
+        <p>Total Area of chimneys: {{ chimneys.area }}</p>
+      {% endif %}
+      {% if dryerarea %}
+        <p>Surface area of drying beds in m2: {{ dryerarea.surface }}</p>
+        <p>Loading density: {{ dryerarea.density }}</p>
+      {% endif %}
     </div>
   </div>
 </div>

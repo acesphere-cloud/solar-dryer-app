@@ -1,4 +1,4 @@
-coefficient,symbol,value,equation
+coefficient,symbol,equivalent,equation
 Dimensionless parameter (0.14-0.25),?,0.2,airflow
 Boiling Temp of water in degrees,Tb,100,airflow
 Freezing Temp water in degrees,Tc,0,airflow

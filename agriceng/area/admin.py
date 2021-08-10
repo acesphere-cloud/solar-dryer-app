@@ -22,10 +22,10 @@ class CropAdmin(admin.ModelAdmin):
 class CoefficientAdmin(admin.ModelAdmin):
     form = CoefficientForm
     fieldsets = (
-        (_('Equation Coefficients'), {'fields': ('equation', 'coefficient', 'symbol', 'value')}),
+        (_('Equation Coefficients'), {'fields': ('equation', 'coefficient', 'symbol', 'equivalent')}),
         (_('Timestamps'), {'classes': ('collapse', ), 'fields': ('created', 'modified')}),
     )
-    list_display = ('equation', 'coefficient', 'symbol', 'value')
+    list_display = ('equation', 'coefficient', 'symbol', 'equivalent')
     list_display_links = ('coefficient',)
     list_filter = ('equation',)
     readonly_fields = ('created', 'modified')

@@ -35,7 +35,7 @@ class Coefficient(models.Model):
     ]
     coefficient = models.CharField(max_length=128, )
     symbol = models.CharField(max_length=4)
-    value = models.FloatField()
+    equivalent = models.FloatField()
     equation = models.CharField(max_length=16, choices=EQUATION_CHOICES)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -46,7 +46,7 @@ class Coefficient(models.Model):
         ]
 
     def __str__(self):
-        return self.value
+        return str(self.coefficient)
 
     def save(self, *args, **kwargs):
         # Remove leading and trailing spaces on coefficients
