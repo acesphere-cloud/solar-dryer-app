@@ -6,7 +6,7 @@
 {% block title %}Solar Dryer Design{% endblock %}
 
 {% block content %}
-  <h1>Generate Solar Dryer Design Specifications</h1>
+  <h2>Generate Solar Dryer Design Specifications</h2>
   <form class="form-vertical" method="post" action="{% url 'area:solar_dryer' %}">
     {% csrf_token %}
     {{ form|crispy }}
@@ -15,47 +15,128 @@
     </div>
     <br/>
   </form>
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      {% if temperature %}
-        <p>Average Temperature, {{ location.address }}: {{ temperature }}</p>
-        <p> Timezone: {{ location.tz }} </p>
-        <p>Coordinates: {{ location.latitude }}, {{ location.longitude }} </p>
-      {% endif %}
-      {% if wind_speed %}
-        <p> Average Wind Speed, {{ location.name }}: {{ wind_speed }} </p>
-      {% endif %}
-      {% if airflow %}
-      <p> Temperature Diff: {{ airflow.temperature_diff }} </p>
-      {% endif %}
-      {% if moisture %}
-        <p>Mass of moisture to be removed in kg: {{ moisture.to_remove }}</p>
-      {% endif %}
-      {% if airvolume %}
-        <p>Volume of air required to remove the moisture in m3: {{ airvolume.required }}</p>
-      {% endif %}
-      {% if vaporization %}
-        <p>Enthalpy of vaporization: {{ vaporization.enthalpy }}</p>
-      {% endif %}
-      {% if flowrate %}
-        <p>Volume flow rate (Va/t): {{ flowrate.volume }}</p>
-        <p>Mass flow rate V*1.2: {{ flowrate.mass }}</p>
-      {% endif %}
-      {% if collectorarea %}
-        <p>Collector area: {{ collectorarea.collecting }}</p>
-        <p>Area of Drying Chamber in case of improved dryer: {{ collectorarea.improved_dryer }}</p>
-        <p>Collector Area in the case of improved dryer: {{ collectorarea.improved_dryer }}</p>
-      {% endif %}
-      {% if chimneys %}
-        <p>Number of chimneys: {{ chimneys.number }}</p>
-        <p>Total Area of chimneys: {{ chimneys.area }}</p>
-      {% endif %}
-      {% if dryerarea %}
-        <p>Surface area of drying beds in m2: {{ dryerarea.surface }}</p>
-        <p>Loading density: {{ dryerarea.density }}</p>
-      {% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        {% if temperature %}
+          <p>Average Temperature, {{ location.address }}: {{ temperature }}</p>
+          <p> Timezone: {{ location.tz }} </p>
+          <p>Coordinates: {{ location.latitude }}, {{ location.longitude }} </p>
+        {% endif %}
+        {% if wind_speed %}
+          <p> Average Wind Speed, {{ location.name }}: {{ wind_speed }} </p>
+        {% endif %}
+        {% if airflow %}
+          <p> Temperature Diff: {{ airflow.temperature_diff }} </p>
+        {% endif %}
+        {% if moisture %}
+          <p>Mass of moisture to be removed in kg: {{ moisture.to_remove }}</p>
+        {% endif %}
+        {% if airvolume %}
+          <p>Volume of air required to remove the moisture in m3: {{ airvolume.required }}</p>
+        {% endif %}
+        {% if vaporization %}
+          <p>Enthalpy of vaporization: {{ vaporization.enthalpy }}</p>
+        {% endif %}
+        {% if flowrate %}
+          <p>Volume flow rate (Va/t): {{ flowrate.volume }}</p>
+          <p>Mass flow rate V*1.2: {{ flowrate.mass }}</p>
+        {% endif %}
+        {% if collectorarea %}
+          <p>Collector area: {{ collectorarea.collecting }}</p>
+          <p>Area of Drying Chamber in case of improved dryer: {{ collectorarea.improved_dryer }}</p>
+          <p>Collector Area in the case of improved dryer: {{ collectorarea.improved_dryer }}</p>
+        {% endif %}
+        {% if chimneys %}
+          <p>Number of chimneys: {{ chimneys.number }}</p>
+          <p>Total Area of chimneys: {{ chimneys.area }}</p>
+        {% endif %}
+        {% if dryerarea %}
+          <p>Surface area of drying beds in m2: {{ dryerarea.surface }}</p>
+          <p>Loading density: {{ dryerarea.density }}</p>
+        {% endif %}
+      </div>
     </div>
   </div>
-</div>
+  {% if moisture.mass %}
+    <div class="container">
+      {% if moisture.mass < 200 %}
+        <div class="row">
+          <div class="col align-self-centre">
+            <strong>Below Small Dryers recommended for drying {{ moisture.crop }} of {{ moisture.mass }} kg at
+              {{ location.address }}:</strong>
+          </div>
+          <div class="w-100"></div>
+          {% for dryer in dryerarea.dryers %}
+            {% if dryer.size == 'SM' %}
+              {% if dryer.version == 'SI' %}
+                <div class="col align-self-start">
+                  <p>{{ dryer }}</p>
+                  <p>Area of Drying Chamber: {{ collectorarea.collecting }}</p>
+                  <p>Area of Drying Trays: {{ dryerarea.surface }}</p>
+                  <p>Area of air outlet: {{ chimneys.area }}</p>
+                  <figure class="figure">
+                    <img src="{{ MEDIA_URL }}{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption"><p class="h7">{{ dryer }}<p></figcaption>
+                  </figure>
+                </div>
+              {% endif %}
+              {% if dryer.version == 'IM' %}
+                <div class="col align-self-start">
+                  <p>{{ dryer }}</p>
+                  <p>Area of Drying Chamber: {{ collectorarea.improved_dryer }}</p>
+                  <p>Area of collector: {{ collectorarea.improved_dryer }}</p>
+                  <p>Area of Drying Trays: {{ dryerarea.surface }}</p>
+                  <p>Area of air outlet: {{ chimneys.area }}</p>
+                  <figure class="figure">
+                    <img src="{{ MEDIA_URL }}{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption"><p class="h7">{{ dryer }}<p></figcaption>
+                  </figure>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if moisture.mass >= 200 %}
+        <div class="row">
+          <div class="col align-self-centre">
+            <strong>Below Large Dryers are recommended for drying {{ moisture.crop }} of {{ moisture.mass }} kg at
+              {{ location.address }}:</strong>
+          </div>
+          <div class="w-100"></div>
+          {% for dryer in dryerarea.dryers %}
+            {% if dryer.size == 'LA' %}
+              {% if dryer.version == 'SI' %}
+                <div class="col align-self-start">
+                  <p>{{ dryer }}</p>
+                  <p>Area of Drying Chamber: {{ collectorarea.collecting }}</p>
+                  <p>Area of Drying Trays: {{ dryerarea.surface }}</p>
+                  <p>Area of air outlet: {{ chimneys.area }}</p>
+                  <p>Number of Chimneys: {{ chimneys.number }}</p>
+                  <figure class="figure">
+                    <img src="{{ MEDIA_URL }}{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption"><p class="h7">{{ dryer }}<p></figcaption>
+                  </figure>
+                </div>
+              {% endif %}
+              {% if dryer.version == 'IM' %}
+                <div class="col align-self-start">
+                  <p>{{ dryer }}</p>
+                  <p>Area of Drying Chamber: {{ collectorarea.improved_dryer }}</p>
+                  <p>Area of collector: {{ collectorarea.improved_dryer }}</p>
+                  <p>Area of Drying Trays: {{ dryerarea.surface }}</p>
+                  <p>Number of Chimneys: {{ chimneys.number }}</p>
+                  <figure class="figure">
+                    <img src="{{ MEDIA_URL }}{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption"><p class="h7">{{ dryer }}<p></figcaption>
+                  </figure>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
 {% endblock content %}

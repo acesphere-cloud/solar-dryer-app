@@ -6,6 +6,7 @@ from django.views.generic.edit import FormView
 
 from .models import Crop, Coefficient
 from .forms import AreaForm
+from agriceng.solardryers.models import Dryer
 from agriceng.weatherdata.api import serializers
 from agriceng.weatherdata.api.viewmixins import LocationWeatherMixin
 
@@ -44,6 +45,8 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         miwb = crop.initial_moisture
         mfwb = crop.final_moisture
         mw = mass*(miwb/100-mfwb/100)/(1-mfwb/100)
+        moisture['crop'] = crop
+        moisture['mass'] = mass
         moisture['to_remove'] = mw
 
 
@@ -105,10 +108,12 @@ class SolarDryerView(LocationWeatherMixin, FormView):
 
         # Drying Area
         dryerarea = {}
+        dryers = Dryer.objects.all()
         m = Coefficient.objects.get(coefficient='recommended drying thickness')
         bd = crop.bulk_density
         sa = 600/(bd*m.equivalent)
         ld = mass/sa
+        dryerarea['dryers'] = dryers
         dryerarea['surface'] = sa
         dryerarea['density'] = ld
 
