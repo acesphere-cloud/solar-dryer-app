@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}}{{ solutions.dryer }} PDF Report{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+       {% if solutions %}
+          <p>{{ solutions.dryer }} Design Report</p>
+          <p>Solar Dryer Design Data for {{ solutions.location.address }}</p>
+          <p> Timezone: {{ solutions.location.tz }} </p>
+          <p>Coordinates: {{ solutions.location.latitude }}, {{ solutions.location.longitude }} </p>
+          <p>Average Temperature: {{ solutions.temp }}</p>
+          <p> Average Wind Speed: {{ solutions.wspd }}</p>
+          <p> Temperature Diff: {{ solutions.temperature_diff }} </p>
+          <p>Mass of moisture to be removed in kg: {{ solutions.moisture }}</p>
+          <p>Volume of air required to remove the moisture in m3: {{ solutions.air_volume }}</p>
+          <p>Enthalpy of vaporization: {{ solutions.enthalpy }}</p>
+          <p>Volume flow rate (Va/t): {{ solutions.volume_fr }}</p>
+          <p>Mass flow rate V*1.2: {{ solutions.mass_fr }}</p>
+          <p>Collector area: {{ solutions.area }}</p>
+          <p>Area of Drying Chamber in case of improved dryer: {{ solutions.improved_area }}</p>
+          <p>Collector Area in the case of improved dryer: {{ solutions.improved_area }}</p>
+          <p>Number of chimneys: {{ solutions.chimneys }}</p>
+          <p>Total Area of chimneys: {{ solutions.chimney_area }}</p>
+          <p>Surface area of drying beds in m2: {{ solutions.surface_area }}</p>
+          <p>Loading density: {{ solutions.density }}</p>
+        {% endif %}
+        <br/>
+      </div>
+    </div>
+  </div>
+{% if object == request.user %}
+<!-- Action buttons -->
+<div class="row">
+  <div class="col-sm-12">
+    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
+    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
+    <!-- Your Stuff: Custom user template urls -->
+  </div>
+</div>
+<!-- End Action buttons -->
+{% endif %}
+{% endblock content %}

@@ -71,6 +71,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "wkhtmltopdf",
 ]
 
 LOCAL_APPS = [
@@ -287,4 +288,4 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # Weather Data API
 # ------------------------------------------------------------------------------
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-WEATHER_DATA_API_KEY = env("VISUAL_CROSSING_API_KEY", default='K7AYGXDEFGF93B5CQHHVV3J4R')
+WEATHER_DATA_API_KEY = env("VISUAL_CROSSING_API_KEY", default='K7AYGXDEFGF93B5CQHHVV3J4Rexit')

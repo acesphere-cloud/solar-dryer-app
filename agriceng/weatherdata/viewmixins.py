@@ -25,7 +25,7 @@ class LocationWeatherMixin:
 
         # Params for history only
         this_week = date.today()
-        last_week = this_week - timedelta(days=27)
+        last_week = this_week - timedelta(days=365)
         StartDate = str(last_week)
         EndDate = str(this_week)
 

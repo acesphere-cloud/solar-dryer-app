@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from django.utils import timezone
 
 from rest_framework import serializers
-
+from rest_framework import ISO_8601
+from rest_framework.settings import api_settings
 
 class Metric:
     def __init__(self, id, name, type, unit=None, created=None):
@@ -95,8 +98,31 @@ class Weather:
         self.datetime = datetime
 
 
+class TimestampField(serializers.DateTimeField):
+
+    def to_representation(self, value):
+        if not value:
+            return None
+
+        value = datetime.fromtimestamp(value/1000)
+
+        output_format = getattr(self, 'format', api_settings.DATETIME_FORMAT)
+
+        if output_format is None or isinstance(value, str):
+            return value
+
+        value = self.enforce_timezone(value)
+
+        if output_format.lower() == ISO_8601:
+            value = value.isoformat()
+            if value.endswith('+00:00'):
+                value = value[:-6] + 'Z'
+            return value
+        return value.strftime(output_format)
+
+
 class WeatherSerializer(serializers.Serializer):
-    datetime = serializers.DateTimeField(format=None)
+    datetime = TimestampField(format='%Y-%m-%d')
     temp = serializers.DecimalField(max_digits=3, decimal_places=1)
     wspd = serializers.DecimalField(max_digits=4, decimal_places=1)
     info = serializers.CharField()

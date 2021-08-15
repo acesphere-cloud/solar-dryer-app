@@ -10,7 +10,7 @@
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
 
     <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
@@ -55,6 +55,7 @@
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'home' %}">Solar Dryer App<span class="sr-only">(current)</span></a>
             </li>
+            {% if request.user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'weather:location' %}">Weather Data</a>
             </li>
@@ -64,7 +65,7 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'solardryer:dryers' %}">Solar Dryers</a>
             </li>
-            {% if request.user.is_authenticated %}
+
               <li class="nav-item">
                 {# URL provided by django-allauth/account/urls.py #}
                 <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>

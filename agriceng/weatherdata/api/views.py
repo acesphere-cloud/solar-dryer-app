@@ -7,7 +7,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 
-from .viewmixins import LocationWeatherMixin
+from agriceng.weatherdata.viewmixins import LocationWeatherMixin
 from .serializers import MetricSerializer, WeatherSerializer, Metric, Weather, Location, LocationSerializer, \
     QuerySerializer
 
