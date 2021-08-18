@@ -1,46 +1,142 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block css %}
+  {{ block.super }}
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/offcanvas.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"><\/script>')</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.8/holder.min.js"></script>
+  <script defer src="{% static 'js/offcanvas.js' %}"></script>
+{% endblock javascript %}
+
 {% block title %}}{{ solutions.dryer }} PDF Report{% endblock %}
 
+
 {% block content %}
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-       {% if solutions %}
-          <p>{{ solutions.dryer }} Design Report</p>
-          <p>Solar Dryer Design Data for {{ solutions.location.address }}</p>
-          <p> Timezone: {{ solutions.location.tz }} </p>
-          <p>Coordinates: {{ solutions.location.latitude }}, {{ solutions.location.longitude }} </p>
-          <p>Average Temperature: {{ solutions.temp }}</p>
-          <p> Average Wind Speed: {{ solutions.wspd }}</p>
-          <p> Temperature Diff: {{ solutions.temperature_diff }} </p>
-          <p>Mass of moisture to be removed in kg: {{ solutions.moisture }}</p>
-          <p>Volume of air required to remove the moisture in m3: {{ solutions.air_volume }}</p>
-          <p>Enthalpy of vaporization: {{ solutions.enthalpy }}</p>
-          <p>Volume flow rate (Va/t): {{ solutions.volume_fr }}</p>
-          <p>Mass flow rate V*1.2: {{ solutions.mass_fr }}</p>
-          <p>Collector area: {{ solutions.area }}</p>
-          <p>Area of Drying Chamber in case of improved dryer: {{ solutions.improved_area }}</p>
-          <p>Collector Area in the case of improved dryer: {{ solutions.improved_area }}</p>
-          <p>Number of chimneys: {{ solutions.chimneys }}</p>
-          <p>Total Area of chimneys: {{ solutions.chimney_area }}</p>
-          <p>Surface area of drying beds in m2: {{ solutions.surface_area }}</p>
-          <p>Loading density: {{ solutions.density }}</p>
-        {% endif %}
-        <br/>
+  <body class="bg-light">
+  <div class="d-flex justify-content-between align-items-center w-100">
+    <small class="text-gray-dark">{{ solutions.location.created }}</small>
+    <small>Timezone: {{ solutions.location.tz }}</small>
+  </div>
+    <main role="main" class="container">
+      <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-moderate-blue rounded box-shadow">
+        <a href="https://agriceng.cloud">
+          <img class="mr-3" src="{% static 'images/favicons/agriceng_logo.png' %}" alt="" width="100" height="68.2">
+        </a>
+        <div class="lh-100">
+          <h4 class="mb-0 text-white lh-100">{{ solutions.dryer }} Report for {{ solutions.crop.name }}</h4>
+          <small>Address: {{ solutions.location.address }}</small><br/>
+          <small>Area Coordinates:
+            <a href="https://www.google.com/maps/search/?api=1&query={{ solutions.location.latitude}}%20%20{{solutions.location.longitude }}" target="_blank">
+              {{ solutions.location.latitude}},{{solutions.location.longitude }}
+            </a>
+          </small><br/>
+          <small>Average Temperature: {{ solutions.temp }}</small><br/>
+          <small>Average Wind Speed: {{ solutions.wspd }}</small>
+        </div>
       </div>
-    </div>
-  </div>
-{% if object == request.user %}
-<!-- Action buttons -->
-<div class="row">
-  <div class="col-sm-12">
-    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <!-- Your Stuff: Custom user template urls -->
-  </div>
-</div>
-<!-- End Action buttons -->
-{% endif %}
+      <div class="my-3 p-3 bg-white rounded box-shadow">
+        <h6 class="border-bottom border-gray pb-2 mb-0">{{ solutions.dryer }} Schematics</h6>
+        <div class="media text-muted pt-2">
+          <img src="{{ MEDIA_URL }}{{ solutions.dryer.diagram }}" class="img-fluid" alt="{{ solutions.dryer }}">
+        </div><br/>
+        <h6 class="border-bottom border-gray pb-2 mb-0">{{ solutions.dryer }} Requirements</h6>
+        <div class="media text-muted pt-2">
+          <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+          <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <strong class="text-gray-dark">Area of Drying Chamber:</strong>
+              {% if solutions.dryer.version == 'SI' %}
+                {{ solutions.area }}
+              {% else %}
+                {{solutions.improved_area}}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="media text-muted pt-2">
+          <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+          <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <strong class="text-gray-dark">Area of Drying Trays:</strong>
+              {{ solutions.surface_area }}
+            </div>
+          </div>
+        </div>
+        {% if solutions.dryer.size == 'SM' or solutions.dryer.version == 'SI' %}
+          <div class="media text-muted pt-2">
+            <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+            <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <strong class="text-gray-dark">Area of air outlet:</strong>
+                {{ solutions.chimney_area }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        {% if solutions.dryer.version == 'IM' %}
+          <div class="media text-muted pt-2">
+            <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+            <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <strong class="text-gray-dark">Area of collector:</strong>
+                {{ solutions.improved_area }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        {% if solutions.dryer.size == 'LA' %}
+        <div class="media text-muted pt-2">
+          <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+          <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <strong class="text-gray-dark">Number of Chimneys:</strong>
+              {{ solutions.chimneys }}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="my-3 p-3 bg-white rounded box-shadow">
+        <h6 class="border-bottom border-gray pb-2 mb-0">Construction Notes:</h6>
+        {% for note in solutions.notes %}
+          {% if note.dryer == solutions.dryer %}
+            <div class="media text-muted pt-2">
+              <img data-src="holder.js/16x16?theme=thumb&amp;bg=d8587e&amp;fg=d8587e&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;">
+              <p class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+                {{ note.note }}
+              </p>
+            </div>
+          {% endif %}
+        {% empty %}
+          N/A
+        {% endfor %}
+      </div>
+      {% if solutions.dryer.construct or solutions.dryer.variation %}
+        <div style = "display:block; clear:both; page-break-after:always;"></div>
+        <div class="my-3 p-5 bg-white rounded box-shadow">
+          {% if solutions.dryer.construct %}
+            <h6 class="border-bottom border-gray pb-2 mb-0">Example of Constructed {{ solutions.dryer }}</h6>
+            <div class="media text-muted pt-2">
+              <img src="{{ MEDIA_URL }}{{ solutions.dryer.construct }}" class="img-fluid" alt="{{ solutions.dryer }}">
+            </div><br/>
+          {% endif %}
+          {% if solutions.dryer.variation %}
+            {% if solutions.dryer.size == 'LA' and solutions.dryer.version == 'SI' %}
+              <div style = "display:block; clear:both; page-break-after:always;"></div>
+            {% endif %}
+            <h6 class="border-bottom border-gray pb-2 mb-0">Possible Design Variations</h6>
+            <div class="media text-muted pt-2">
+              <img src="{{ MEDIA_URL }}{{ solutions.dryer.variation }}" class="img-fluid" alt="{{ solutions.dryer }}">
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </main>
+  </body>
 {% endblock content %}

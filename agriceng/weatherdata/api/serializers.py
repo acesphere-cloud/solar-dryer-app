@@ -65,7 +65,7 @@ class LocationSerializer(serializers.Serializer):
     tz = serializers.CharField()
     conditions = serializers.CharField()
     alerts = serializers.CharField()
-    created = serializers.DateTimeField()
+    created = serializers.DateTimeField(format='%b %d, %Y')
 
     def create(self, validated_data):
         return Location(**validated_data)
@@ -122,7 +122,7 @@ class TimestampField(serializers.DateTimeField):
 
 
 class WeatherSerializer(serializers.Serializer):
-    datetime = TimestampField(format='%Y-%m-%d')
+    datetime = TimestampField(format='%b %d, %Y')
     temp = serializers.DecimalField(max_digits=3, decimal_places=1)
     wspd = serializers.DecimalField(max_digits=4, decimal_places=1)
     info = serializers.CharField()

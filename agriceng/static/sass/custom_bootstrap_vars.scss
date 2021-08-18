@@ -1,0 +1,25 @@
+
+
+
+
+// Custom CSS
+
+////////////////////////////////
+		//Variables//
+////////////////////////////////
+
+// PDF colors
+
+$moderate-blue: #58a7d8;
+
+////////////////////////////////
+		//Alerts//
+////////////////////////////////
+
+// bootstrap alert CSS, translated to the django-standard levels of
+// debug, info, success, warning, error
+
+
+.bg-moderate-blue {
+  background-color: $moderate-blue;
+}

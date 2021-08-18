@@ -30,8 +30,3 @@ def run(*args):
     serializerz = CommentSerializer(comments, many=True)
 
 
-    print(serializer1.data)
-    print()
-    print(serializer2.data)
-    print()
-    print(serializerz.data)

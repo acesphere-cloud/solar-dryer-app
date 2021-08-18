@@ -9,7 +9,7 @@ from wkhtmltopdf.views import PDFTemplateResponse
 from .models import Crop, Coefficient
 from .api.serializers import CropSerializer
 from .forms import AreaForm, PDFForm
-from agriceng.solardryers.models import Dryer
+from agriceng.solardryers.models import Dryer, Note
 from agriceng.solardryers.api.serializers import DryerSerializer
 from agriceng.weatherdata.api import serializers
 from agriceng.weatherdata.viewmixins import LocationWeatherMixin
@@ -230,6 +230,7 @@ class SolarDryerView(LocationWeatherMixin, FormView):
                     average_wspd = sum([float(reading) for values in weather_values.data for metric, reading in
                                 values.items() if metric == 'wspd'])/len(weather_values.data)
                     location = serializers.LocationSerializer(location)
+                    print(type(location.data['created']))
                 if form.is_valid():
                     return self.form_valid(
                         form,
@@ -243,8 +244,10 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         elif 'pdf-context' in request.POST:
             pdf_form = self.get_form(form_class=PDFForm)
             if pdf_form.is_valid():
+                notes = Note.objects.all()
                 dryer = pdf_form.cleaned_data['solar_dryer']
                 solutions = pdf_form.cleaned_data['context']
+                solutions['notes'] = notes
                 solutions['dryer'] = dryer
                 return self.pdf_form_valid(solutions, dryer=dryer)
 
@@ -261,7 +264,8 @@ class SolarDryerView(LocationWeatherMixin, FormView):
                 return self.form_invalid(form, pdf_form, solutions)
 
     def pdf_form_valid(self, solutions, **kwargs):
-        filename = "{} Report".format(kwargs['dryer'])
+        if 'dryer' in kwargs:
+            filename = "{} Report.pdf".format(kwargs['dryer'])
         return self.render_pdf_response(self.get_pdf_data(solutions=solutions), filename=filename)
 
     def render_pdf_response(self, context, **response_kwargs):
