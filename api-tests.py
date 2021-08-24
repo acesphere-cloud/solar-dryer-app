@@ -14,7 +14,7 @@ ApiKey = 'K3YVFFUCWT3SRNJKWJT9V3S47'
 UnitGroup = 'metric'
 
 #Locations for the weather data. Multiple locations separated by pipe (|)
-Locations='qweqweqweweqe'
+Locations='tropez'
 
 #FORECAST or HISTORY
 QueryType='HISTORY'
@@ -24,7 +24,7 @@ AggregateHours='24'
 
 #Params for history only
 this_week = date.today()
-last_week = this_week - timedelta(days=7)
+last_week = this_week - timedelta(days=0)
 StartDate = str(last_week)
 EndDate = str(this_week)
 

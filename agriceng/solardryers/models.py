@@ -24,6 +24,10 @@ class Dryer(models.Model):
     class Meta:
         ordering = ['-size', '-version']
 
+        constraints = [
+            models.UniqueConstraint(fields=['size', 'version'], name='unique_dryer')
+        ]
+
     def get_size(self):
         size = [i[1] for i in self.SIZE_CHOICES if i[0] == self.size]
         return size.pop()
@@ -43,7 +47,7 @@ class Note(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['dryer', 'created', 'modified']
+        ordering = ['dryer', 'created', 'modified', 'note']
 
     def __str__(self):
         return str(self.dryer) + ": " + self.note[:21] + "..."

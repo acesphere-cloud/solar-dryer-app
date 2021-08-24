@@ -12,7 +12,7 @@ from .serializers import MetricSerializer, WeatherSerializer, Metric, Weather, L
     QuerySerializer
 
 
-class WeatherView(LocationWeatherMixin, APIView):
+class WeatherView(APIView):
     template_name = 'pages/weather.html'
     renderer_classes = [TemplateHTMLRenderer]
     permission_classes = (AllowAny,)
@@ -32,6 +32,7 @@ class WeatherView(LocationWeatherMixin, APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
         query = QuerySerializer(data=request.data)
         weather_metrics = []
         weather_values = []
@@ -47,7 +48,7 @@ class WeatherView(LocationWeatherMixin, APIView):
                 'query': query,
             }, status=status.HTTP_400_BAD_REQUEST)
         location = query.data['location']
-        url = self.get_weather_url(location)
+        url = LocationWeatherMixin.get_weather_url(self, location)
         try:
             response = requests.get(url)
             print(' - Running query URL: ', url)

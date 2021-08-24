@@ -29,6 +29,6 @@ class NoteAdmin(admin.ModelAdmin):
     list_display = ('dryer', 'note', 'created', )
     list_filter = ('dryer', )
     readonly_fields = ('created', 'modified')
-    search_fields = ('dryer', 'note',)
+    search_fields = ('note',)
     date_hierarchy = 'modified'
 
