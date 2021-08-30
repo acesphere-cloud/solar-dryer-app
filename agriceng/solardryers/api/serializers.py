@@ -22,6 +22,7 @@ class VersionField(serializers.RelatedField):
 class DryerSerializer(serializers.ModelSerializer):
     size = SizeField()
     version = VersionField()
+
     class Meta:
         model = Dryer
-        fields = ['size', 'version', 'diagram', 'construct', 'variation', ]
+        fields = ['size', 'version', 'diagram', 'construct', 'variation']

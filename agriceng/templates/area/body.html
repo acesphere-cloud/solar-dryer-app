@@ -24,6 +24,9 @@
     <small>Timezone: {{ solutions.location.tz }}</small>
   </div>
     <main role="main" class="container">
+      {% for dryer_serializer in solutions.dryers %}
+        {% if dryer_serializer.size == solutions.dryer.get_size %}
+          {% if dryer_serializer.version == solutions.dryer.get_version %}
       <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-moderate-blue rounded box-shadow">
         <a href="https://agriceng.cloud">
           <img class="mr-3" src="{% static 'images/favicons/agriceng_logo.png' %}" alt="" width="100" height="68.2">
@@ -42,9 +45,11 @@
       </div>
       <div class="my-3 p-3 bg-white rounded box-shadow">
         <h6 class="border-bottom border-gray pb-2 mb-0">{{ solutions.dryer }} Schematics</h6>
-        <div class="media text-muted pt-2">
-          <img src="{{ MEDIA_URL }}{{ solutions.dryer.diagram }}" class="img-fluid" alt="{{ solutions.dryer }}">
-        </div><br/>
+        <figure class="figure">
+          <img src="{{ dryer_serializer.diagram }}" class="figure-img img-fluid rounded" alt="">
+          <figcaption class="figure-caption"><p class="h7 text-center">{{ solutions.dryer }}<p></figcaption>
+        </figure>
+        <br/>
         <h6 class="border-bottom border-gray pb-2 mb-0">{{ solutions.dryer }} Requirements</h6>
         <div class="media text-muted pt-2">
           <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
@@ -52,9 +57,9 @@
             <div class="d-flex justify-content-between align-items-center w-100">
               <strong class="text-gray-dark">Area of Drying Chamber:</strong>
               {% if solutions.dryer.version == 'SI' %}
-                {{ solutions.area }}
+                {{ solutions.area|floatformat:"-3" }} square meters (m2)
               {% else %}
-                {{solutions.improved_area}}
+                {{solutions.improved_area|floatformat:"-3" }} square meters (m2)
               {% endif %}
             </div>
           </div>
@@ -64,7 +69,7 @@
           <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
             <div class="d-flex justify-content-between align-items-center w-100">
               <strong class="text-gray-dark">Area of Drying Trays:</strong>
-              {{ solutions.surface_area }}
+              {{ solutions.surface_area|floatformat:"-3" }} square meters (m2)
             </div>
           </div>
         </div>
@@ -74,7 +79,7 @@
             <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
               <div class="d-flex justify-content-between align-items-center w-100">
                 <strong class="text-gray-dark">Area of air outlet:</strong>
-                {{ solutions.chimney_area }}
+                {{ solutions.chimney_area|floatformat:"-3" }} square meters (m2)
               </div>
             </div>
           </div>
@@ -85,7 +90,7 @@
             <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
               <div class="d-flex justify-content-between align-items-center w-100">
                 <strong class="text-gray-dark">Area of collector:</strong>
-                {{ solutions.improved_area }}
+                {{ solutions.improved_area|floatformat:"-3" }} square meters (m2)
               </div>
             </div>
           </div>
@@ -96,7 +101,7 @@
           <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
             <div class="d-flex justify-content-between align-items-center w-100">
               <strong class="text-gray-dark">Number of Chimneys:</strong>
-              {{ solutions.chimneys }}
+              {{ solutions.chimneys }} chimney(s)
             </div>
           </div>
         </div>
@@ -122,21 +127,25 @@
         <div class="my-3 p-5 bg-white rounded box-shadow">
           {% if solutions.dryer.construct %}
             <h6 class="border-bottom border-gray pb-2 mb-0">Example of Constructed {{ solutions.dryer }}</h6>
-            <div class="media text-muted pt-2">
-              <img src="{{ MEDIA_URL }}{{ solutions.dryer.construct }}" class="img-fluid" alt="{{ solutions.dryer }}">
-            </div><br/>
+            <figure class="figure">
+              <img src="{{ dryer_serializer.construct }}" class="figure-img img-fluid rounded" alt="">
+            </figure>
           {% endif %}
           {% if solutions.dryer.variation %}
             {% if solutions.dryer.size == 'LA' and solutions.dryer.version == 'SI' %}
               <div style = "display:block; clear:both; page-break-after:always;"></div>
             {% endif %}
             <h6 class="border-bottom border-gray pb-2 mb-0">Possible Design Variations</h6>
-            <div class="media text-muted pt-2">
-              <img src="{{ MEDIA_URL }}{{ solutions.dryer.variation }}" class="img-fluid" alt="{{ solutions.dryer }}">
-            </div>
+            <figure class="figure">
+              <img src="{{ dryer_serializer.variation }}" class="figure-img img-fluid rounded" alt="">
+              <figcaption class="figure-caption"><p class="h7 text-center">{{ solutions.dryer }} Variations<p></figcaption>
+            </figure>
           {% endif %}
         </div>
       {% endif %}
     </main>
+  {% endif %}
+      {% endif %}
+      {% endfor %}
   </body>
 {% endblock content %}

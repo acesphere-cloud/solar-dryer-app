@@ -1,22 +1,22 @@
-coefficient,symbol,equivalent,equation
-Dimensionless parameter (0.14-0.25),?,0.2,airflow
-Boiling Temp of water in degrees,Tb,100,airflow
-Freezing Temp water in degrees,Tc,0,airflow
-Intensity of radiation W/m2,It,555,airflow
-Solar constant ,Io,1367,airflow
-Partial pressure of dry air in atmosphere,Pa,101800,air volume
-Specific heat capacity of air at constant pressure,Cpa,1006,air volume
-Specifc gass constant ,Ra,286.9,vaporization
-Gass constant of water vapor ,Rg,461.5,vaporization
-Boiling point of water in Kelvins ,Tb2,373,vaporization
-Critical pressure of water ,Pc,22060000,vaporization
-Critical Temp of water in Kelvins,Tc,650,vaporization
-Total drying time (24 hours),t,86400,flow rate
-Density of air ,p,1.2,flow rate
-Efficiency,n,0.125,collector area
-It intensity of radiation on tilted surface ,It,555,collector area
-Total time,t,86400,collector area
-Average velocity at exit of chimney ,Vc,4,chimney
-Width of chimney ,w,0.265,chimney
-Depth of chimney,s,0.3,chimney
-Recommended drying thickness,m,0.02,drying bed
+coefficient,units,symbol,equivalent,equation
+Boiling Temp of water in degrees,Degrees Celcius (?C),Tb,100,airflow
+Freezing Temp water in degrees,Degrees Celcius (?C),Tc,0,airflow
+Intensity of radiation W/m2,Watts per square meter (W/m2),It,555,airflow
+Dimensionless parameter (0.14-0.25),,?,0.2,airflow
+Solar constant ,,Io,1367,airflow
+Partial pressure of dry air in atmosphere,Pascal (Pa),Pa,101800,air volume
+Specific heat capacity of air at constant pressure,Joules per kg (J/KgK),Cpa,1006,air volume
+Specifc gass constant ,J/KgK,Ra,286.9,vaporization
+Gass constant of water vapor ,,Rg,461.5,vaporization
+Boiling point of water in Kelvins ,Kelvins (K),Tb2,373,vaporization
+Critical pressure of water ,Pascal (Pa),Pc,22060000,vaporization
+Critical Temp of water in Kelvins,Kelvins (K),Tc,650,vaporization
+Total drying time (24 hours),Seconds (s),t,86400,flow rate
+Density of air ,Kilograms per cubic meter (Kg/m3),p,1.2,flow rate
+Efficiency,,n,0.125,collector area
+It intensity of radiation on tilted surface ,Watts per square meter (W/m2),It,555,collector area
+Total time,Seconds (s),t,86400,collector area
+Average velocity at exit of chimney ,Meters per second (m/s),Vc,4,chimney
+Width of chimney ,meters (m),w,0.265,chimney
+Depth of chimney,meters (m),s,0.3,chimney
+Recommended drying thickness,meters (m),m,0.02,drying bed

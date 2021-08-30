@@ -32,7 +32,6 @@ class WeatherView(APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         query = QuerySerializer(data=request.data)
         weather_metrics = []
         weather_values = []
@@ -89,7 +88,6 @@ class WeatherView(APIView):
                     'query': query,
                     'messages': messages
                 }, status=status.HTTP_400_BAD_REQUEST)
-            print(weather_data)
             for metric, details in weather_data['columns'].items():
                 metric = Metric(id=details['id'], name=details['name'], type=details['type'], unit=details['unit'])
                 weather_metrics.append(metric)

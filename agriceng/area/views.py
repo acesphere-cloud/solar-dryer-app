@@ -142,7 +142,7 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         vc = kwargs['average_wspd']*1000/3600
         cn = vfr/(w.equivalent*s.equivalent*vc)
         ac = cn*vc
-        solutions['chimneys'] = cn
+        solutions['chimneys'] = math.ceil(cn)
         solutions['chimney_area'] = ac
 
         # Drying Area
@@ -230,7 +230,6 @@ class SolarDryerView(LocationWeatherMixin, FormView):
                     average_wspd = sum([float(reading) for values in weather_values.data for metric, reading in
                                 values.items() if metric == 'wspd'])/len(weather_values.data)
                     location = serializers.LocationSerializer(location)
-                    print(type(location.data['created']))
                 if form.is_valid():
                     return self.form_valid(
                         form,

@@ -48,7 +48,7 @@ http:
   services:
     django:
       loadBalancer:
-        servers:
+        servers:i
           - url: http://django:5000
 
 providers:

@@ -34,6 +34,7 @@ class Coefficient(models.Model):
         (DRYINGBED, 'Drying Bed'),
     ]
     coefficient = models.CharField(max_length=128, )
+    units = models.CharField(max_length=64, blank=True)
     symbol = models.CharField(max_length=4)
     equivalent = models.FloatField()
     equation = models.CharField(max_length=16, choices=EQUATION_CHOICES)

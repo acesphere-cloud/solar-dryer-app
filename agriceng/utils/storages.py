@@ -8,4 +8,5 @@ class StaticRootS3Boto3Storage(S3Boto3Storage):
 
 class MediaRootS3Boto3Storage(S3Boto3Storage):
     location = "media"
+    querystring_auth = True
     file_overwrite = False
