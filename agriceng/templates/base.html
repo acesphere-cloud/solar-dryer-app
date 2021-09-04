@@ -60,7 +60,7 @@
               <a class="nav-link" href="{% url 'weather:location' %}">Weather Data</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'home' %}">Crop Moisture</a>
+              <a class="nav-link" href="{% url 'area:crops' %}">Crop Moisture</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'solardryer:dryers' %}">Solar Dryers</a>
@@ -110,5 +110,4 @@
     {# Script tags with only code, no src (defer by default) #}
     {% endblock inline_javascript %}
   </body>
-{% load static i18n %}<!DOCTYPE html>
 <html lang="en">

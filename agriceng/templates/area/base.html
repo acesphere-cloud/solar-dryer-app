@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+  {{ block.super }}
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/offcanvas.css' %}" rel="stylesheet">
+{% endblock %}
+{% block javascript %}
+  {{ block.super }}
+  <script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"><\/script>')</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.8/holder.min.js"></script>
+  <script defer src="{% static 'js/offcanvas.js' %}"></script>
+{% endblock javascript %}

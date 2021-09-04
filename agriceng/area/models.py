@@ -35,7 +35,7 @@ class Coefficient(models.Model):
     ]
     coefficient = models.CharField(max_length=128, )
     units = models.CharField(max_length=64, blank=True)
-    symbol = models.CharField(max_length=4)
+    symbol = models.CharField(max_length=16)
     equivalent = models.FloatField()
     equation = models.CharField(max_length=16, choices=EQUATION_CHOICES)
     created = models.DateTimeField(auto_now_add=True)
@@ -45,6 +45,7 @@ class Coefficient(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['coefficient', 'equation'], name='common_coefficients')
         ]
+        ordering = ['created', ]
 
     def __str__(self):
         return str(self.coefficient)

@@ -29,9 +29,9 @@
               {% if dryer.version == 'Simple' %}
                 <div class="col align-self-start">
                   <p class="lead"><strong>{{ dryer.size }} {{ dryer.version }} Dryer</strong></p>
-                  <p>Area of Drying Chamber: {{ solutions.area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3" }} square meters (m2)</p>
+                  <p>Area of Drying Chamber: {{ solutions.area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3" }} m&sup2;</p>
                   <figure class="figure">
                     <img src="{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
                     <figcaption class="figure-caption"><p class="h7">{{ dryer.size }} {{ dryer.version }} Dryer<p></figcaption>
@@ -41,10 +41,10 @@
               {% if dryer.version == 'Improved' %}
                 <div class="col align-self-start">
                   <p class="lead"><strong>{{ dryer.size }} {{ dryer.version }} Dryer</strong></p>
-                  <p>Area of Drying Chamber: {{ solutions.improved_area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Area of collector: {{ solutions.improved_area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3" }} square meters (m2)</p>
+                  <p>Area of Drying Chamber: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Area of collector: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3" }} m&sup2;</p>
                   <figure class="figure">
                     <img src="{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
                     <figcaption class="figure-caption"><p class="h7">{{ dryer.size }} {{ dryer.version }} Dryer<p></figcaption>
@@ -67,10 +67,10 @@
               {% if dryer.version == 'Simple' %}
                 <div class="col align-self-start">
                   <p class="lead"><strong>{{ dryer.size }} {{ dryer.version }} Dryer</strong></p>
-                  <p>Area of Drying Chamber: {{ solutions.area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3"}} square meters (m2)</p>
-                  <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3"}} square meters (m2)</p>
-                  <p>Number of Chimneys: {{ solutions.chimneys }} chimney(s)</p>
+                  <p>Area of Drying Chamber: {{ solutions.area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3"}} m&sup2;</p>
+                  <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3"}} m&sup2;</p>
+                  <p>Number of Chimneys: {{ solutions.chimneys }} chimney{{ solutions.chimneys|pluralize }}</p>
                   <figure class="figure">
                     <img src="{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
                     <figcaption class="figure-caption"><p class="h7">{{ dryer.size }} {{ dryer.version }} Dryer<p></figcaption>
@@ -80,10 +80,10 @@
               {% if dryer.version == 'Improved' %}
                 <div class="col align-self-start">
                   <p class="lead"><strong>{{ dryer.size }} {{ dryer.version }} Dryer</strong></p>
-                  <p>Area of Drying Chamber: {{ solutions.improved_area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Area of collector: {{ solutions.improved_area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} square meters (m2)</p>
-                  <p>Number of Chimneys: {{ solutions.chimneys }} chimney(s)</p>
+                  <p>Area of Drying Chamber: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Area of collector: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
+                  <p>Number of Chimneys: {{ solutions.chimneys }} chimney{{ solutions.chimneys|pluralize }}</p>
                   <figure class="figure">
                     <img src="{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
                     <figcaption class="figure-caption"><p class="h7">{{ dryer.size }} {{ dryer.version }} Dryer<p></figcaption>

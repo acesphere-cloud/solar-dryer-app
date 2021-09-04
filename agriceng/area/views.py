@@ -2,6 +2,7 @@ import math
 import requests
 from requests.exceptions import HTTPError
 
+from django.views.generic import ListView
 from django.views.generic.edit import FormView
 from rest_framework.renderers import JSONRenderer
 from wkhtmltopdf.views import PDFTemplateResponse
@@ -75,7 +76,7 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         dp = Coefficient.objects.get(coefficient='dimensionless parameter (0.14-0.25)')
         bt = Coefficient.objects.get(coefficient='boiling temp of water in degrees')
         ft = Coefficient.objects.get(coefficient='freezing temp water in degrees')
-        it = Coefficient.objects.get(coefficient='intensity of radiation w/m2')
+        it = Coefficient.objects.get(coefficient='intensity of radiation')
         sc = Coefficient.objects.get(coefficient='solar constant')
         temp_delta = 2*dp.equivalent*(bt.equivalent-ft.equivalent)*(it.equivalent/sc.equivalent)
         solutions['temperature_diff'] = temp_delta
@@ -101,7 +102,9 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         pc = Coefficient.objects.get(coefficient='critical pressure of water')
         to_deg = kwargs['average_temp']+temp_delta
         tpt_deg = 0.25*((3*to_deg)+kwargs['average_temp'])
+        solutions['tpt_deg'] = tpt_deg
         tpt = tpt_deg+273
+        solutions['tpt'] = tpt
         tcr = Coefficient.objects.get(coefficient='critical temp of water in kelvins')
         lt = (rg.equivalent*tcr.equivalent*tb2.equivalent) * \
              (
@@ -113,9 +116,15 @@ class SolarDryerView(LocationWeatherMixin, FormView):
 
         # Volume of air required
         tf_deg = kwargs['average_temp']+(0.25*temp_delta)
+        solutions['tf_deg'] = tf_deg
         tf = tf_deg+273
+        solutions['tf'] = tf
         ta = kwargs['average_temp']+273
+        solutions['ta'] = ta
+        tt = temp_delta + kwargs['average_temp']
+        solutions['tt'] = tt
         to = to_deg+273
+        solutions['to'] = to
         pa = Coefficient.objects.get(coefficient='partial pressure of dry air in atmosphere')
         cpa = Coefficient.objects.get(coefficient='specific heat capacity of air at constant pressure')
         va = (mw*lt*ra.equivalent*ta)/(cpa.equivalent*pa.equivalent*(to-tf))
@@ -140,6 +149,7 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         w = Coefficient.objects.get(coefficient='width of chimney')
         s = Coefficient.objects.get(coefficient='depth of chimney')
         vc = kwargs['average_wspd']*1000/3600
+        solutions['vc'] = vc
         cn = vfr/(w.equivalent*s.equivalent*vc)
         ac = cn*vc
         solutions['chimneys'] = math.ceil(cn)
@@ -223,13 +233,14 @@ class SolarDryerView(LocationWeatherMixin, FormView):
                     if not weather_values:
                         message = "No weather data available for {}"
                         form.add_error('location', message.format(location.address))
-                    weather_values = serializers.WeatherSerializer(data=weather_values, many=True)
-                    weather_values.is_valid()
-                    average_temp = sum([float(reading) for values in weather_values.data for metric, reading in
-                                values.items() if metric == 'temp'])/len(weather_values.data)
-                    average_wspd = sum([float(reading) for values in weather_values.data for metric, reading in
-                                values.items() if metric == 'wspd'])/len(weather_values.data)
-                    location = serializers.LocationSerializer(location)
+                    else:
+                        weather_values = serializers.WeatherSerializer(data=weather_values, many=True)
+                        weather_values.is_valid()
+                        average_temp = sum([float(reading) for values in weather_values.data for metric, reading in
+                                    values.items() if metric == 'temp'])/len(weather_values.data)
+                        average_wspd = sum([float(reading) for values in weather_values.data for metric, reading in
+                                    values.items() if metric == 'wspd'])/len(weather_values.data)
+                        location = serializers.LocationSerializer(location)
                 if form.is_valid():
                     return self.form_valid(
                         form,
@@ -244,9 +255,11 @@ class SolarDryerView(LocationWeatherMixin, FormView):
             pdf_form = self.get_form(form_class=PDFForm)
             if pdf_form.is_valid():
                 notes = Note.objects.all()
+                coefficients = Coefficient.objects.all()
                 dryer = pdf_form.cleaned_data['solar_dryer']
                 solutions = pdf_form.cleaned_data['context']
                 solutions['notes'] = notes
+                solutions['coefficients'] = coefficients
                 solutions['dryer'] = dryer
                 return self.pdf_form_valid(solutions, dryer=dryer)
 
@@ -296,3 +309,11 @@ class SolarDryerView(LocationWeatherMixin, FormView):
 
 
 solar_dryer_view = SolarDryerView.as_view()
+
+
+class CropListView(ListView):
+    model = Crop
+    context_object_name = 'crops'
+
+
+crop_list_view = CropListView.as_view()

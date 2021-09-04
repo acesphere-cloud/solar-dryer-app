@@ -26,6 +26,7 @@ class CoefficientForm(forms.ModelForm):
         model = Coefficient
         fields = (
             'coefficient',
+            'units',
             'symbol',
             'equivalent',
             'equation',

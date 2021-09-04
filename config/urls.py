@@ -4,11 +4,12 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 from django.views import defaults as default_views
-from django.views.generic import RedirectView
 from rest_framework.authtoken.views import obtain_auth_token
 
+from agriceng.area.views import solar_dryer_view
+
 urlpatterns = [
-    path("", RedirectView.as_view(url="area/"), name="home"),
+    path("", view=solar_dryer_view, name="home"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

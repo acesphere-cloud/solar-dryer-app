@@ -120,16 +120,22 @@ class WeatherView(APIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
             weather_values = WeatherSerializer(data=weather_values, many=True)
             weather_values.is_valid()
-            columns = weather_values.data[0].keys()
             weather_values.save()
             average_temp = sum([float(reading) for values in weather_values.data for metric, reading in values.items()
                                 if metric == 'temp'])/len(weather_values.data)
             average_wspd = sum([float(reading) for values in weather_values.data for metric, reading in values.items()
                                 if metric == 'wspd'])/len(weather_values.data)
             location = LocationSerializer(location)
-            weather_metrics = MetricSerializer(data=weather_metrics, many=True)
+            table_metrics = []
+            for table_column in weather_values.data[0].keys():
+                for metric in weather_metrics:
+                    if metric.id == table_column:
+                        table_metrics.append(metric)
+            print(table_metrics)
+            weather_metrics = MetricSerializer(data=table_metrics, many=True)
             weather_metrics.is_valid()
             weather_metrics.save()
+            print(weather_metrics.data)
             return Response({
                 'location': location.data,
                 'weather_metrics': weather_metrics.data,

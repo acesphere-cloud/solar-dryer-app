@@ -1,5 +1,5 @@
-
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <h2>Solar Dryers</h2><br/>
@@ -9,20 +9,20 @@
         <h3>{{dryer}} Schematics:</h3>
         <div class="col align-self-centre">
           <figure class="figure">
-            <img src="{{ MEDIA_URL }}{{ dryer.diagram }}" width="255" height="255" alt="Diagram Image"
+            <img src="{{  dryer.diagram.url }}" width="255" height="255" alt="Diagram Image"
                  class="img-thumbnail"/>
             <figcaption class="figure-caption"><p class="h7">Diagram<p></figcaption>
           </figure>
           {% if dryer.construct %}
             <figure class="figure">
-              <img src="{{ MEDIA_URL }}{{ dryer.construct }}" width="255" height="255" alt="Construct Image"
+              <img src="{{ dryer.construct.url }}" width="255" height="255" alt="Construct Image"
                    class="img-thumbnail"/>
               <figcaption class="figure-caption"><p class="h7">Construct</figcaption>
             </figure>
           {% endif %}
           {% if dryer.variation %}
             <figure class="figure">
-              <img src="{{ MEDIA_URL }}{{ dryer.variation }}" width="255" height="255" alt="Variation Image"
+              <img src="{{ dryer.variation.url }}" width="255" height="255" alt="Variation Image"
                    class="img-thumbnail"/>
               <figcaption class="figure-caption"><p class="h7">Variation</figcaption>
             </figure>
@@ -53,4 +53,3 @@
     <br/>
   {% endfor %}
 {% endblock %}
-

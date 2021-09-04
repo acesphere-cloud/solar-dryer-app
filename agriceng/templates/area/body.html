@@ -1,151 +1,541 @@
-{% extends "base.html" %}
+{% extends "area/base.html" %}
 {% load static %}
-
-{% block css %}
-  {{ block.super }}
-  <!-- Custom styles for this template -->
-  <link href="{% static 'css/offcanvas.css' %}" rel="stylesheet">
-{% endblock %}
-
-{% block javascript %}
-  {{ block.super }}
-  <script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"><\/script>')</script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.8/holder.min.js"></script>
-  <script defer src="{% static 'js/offcanvas.js' %}"></script>
-{% endblock javascript %}
 
 {% block title %}}{{ solutions.dryer }} PDF Report{% endblock %}
 
 
 {% block content %}
   <body class="bg-light">
-  <div class="d-flex justify-content-between align-items-center w-100">
-    <small class="text-gray-dark">{{ solutions.location.created }}</small>
-    <small>Timezone: {{ solutions.location.tz }}</small>
-  </div>
+    <div class="d-flex justify-content-between align-items-center w-100">
+      <small class="text-gray-dark">{{ solutions.location.created }}</small>
+      <small>Timezone: {{ solutions.location.tz }}</small>
+    </div>
     <main role="main" class="container">
       {% for dryer_serializer in solutions.dryers %}
         {% if dryer_serializer.size == solutions.dryer.get_size %}
           {% if dryer_serializer.version == solutions.dryer.get_version %}
-      <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-moderate-blue rounded box-shadow">
-        <a href="https://agriceng.cloud">
-          <img class="mr-3" src="{% static 'images/favicons/agriceng_logo.png' %}" alt="" width="100" height="68.2">
-        </a>
-        <div class="lh-100">
-          <h4 class="mb-0 text-white lh-100">{{ solutions.dryer }} Report for {{ solutions.crop.name }}</h4>
-          <small>Address: {{ solutions.location.address }}</small><br/>
-          <small>Area Coordinates:
-            <a href="https://www.google.com/maps/search/?api=1&query={{ solutions.location.latitude}}%20%20{{solutions.location.longitude }}" target="_blank">
-              {{ solutions.location.latitude}},{{solutions.location.longitude }}
-            </a>
-          </small><br/>
-          <small>Average Temperature: {{ solutions.temp }}</small><br/>
-          <small>Average Wind Speed: {{ solutions.wspd }}</small>
-        </div>
-      </div>
-      <div class="my-3 p-3 bg-white rounded box-shadow">
-        <h6 class="border-bottom border-gray pb-2 mb-0">{{ solutions.dryer }} Schematics</h6>
-        <figure class="figure">
-          <img src="{{ dryer_serializer.diagram }}" class="figure-img img-fluid rounded" alt="">
-          <figcaption class="figure-caption"><p class="h7 text-center">{{ solutions.dryer }}<p></figcaption>
-        </figure>
-        <br/>
-        <h6 class="border-bottom border-gray pb-2 mb-0">{{ solutions.dryer }} Requirements</h6>
-        <div class="media text-muted pt-2">
-          <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
-          <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
-            <div class="d-flex justify-content-between align-items-center w-100">
-              <strong class="text-gray-dark">Area of Drying Chamber:</strong>
-              {% if solutions.dryer.version == 'SI' %}
-                {{ solutions.area|floatformat:"-3" }} square meters (m2)
-              {% else %}
-                {{solutions.improved_area|floatformat:"-3" }} square meters (m2)
+            <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-moderate-blue rounded box-shadow">
+              <a href="https://agriceng.cloud">
+                <img class="mr-3" src="{% static 'images/favicons/agriceng_logo.png' %}" alt="" width="100" height="68.2">
+              </a>
+              <div class="lh-100">
+                <h4 class="mb-0 text-white lh-100">{{ solutions.dryer }} Report for {{ solutions.crop.name }}</h4>
+                <small>Address: {{ solutions.location.address }}</small><br/>
+                <small>Area Coordinates:
+                  <a href="https://www.google.com/maps/search/?api=1&query={{solutions.location.latitude}}%20%20{{solutions.location.longitude}}" target="_blank">
+                    {{solutions.location.latitude}},{{solutions.location.longitude}}
+                  </a>
+                </small><br/>
+                <small>Average Temperature: {{ solutions.temp|floatformat:"-1" }} &#8451;</small><br/>
+                <small>Average Wind Speed: {{ solutions.wspd|floatformat:"-1" }} kph</small>
+              </div>
+            </div>
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+              <h6 class="border-bottom border-gray pb-2 mb-0">{{ solutions.dryer }} Schematics</h6>
+              <figure class="figure">
+                <img src="{{ dryer_serializer.diagram }}" class="figure-img img-fluid rounded" alt="">
+                <figcaption class="figure-caption"><p class="h7 text-center">{{ solutions.dryer }}<p></figcaption>
+              </figure>
+              <br/>
+              <h6 class="border-bottom border-gray pb-2 mb-0">{{ solutions.dryer }} Requirements</h6>
+              <div class="media text-muted pt-2">
+                <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+                <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+                  <div class="d-flex justify-content-between align-items-center w-100">
+                    <strong class="text-gray-dark">Area of Drying Chamber:</strong>
+                    {% if solutions.dryer.version == 'SI' %}
+                      {{ solutions.area|floatformat:"-3" }} m&sup2;
+                    {% else %}
+                      {{solutions.improved_area|floatformat:"-3" }} m&sup2;
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="media text-muted pt-2">
+                <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+                <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+                  <div class="d-flex justify-content-between align-items-center w-100">
+                    <strong class="text-gray-dark">Area of Drying Trays:</strong>
+                    {{ solutions.surface_area|floatformat:"-3" }} m&sup2;
+                  </div>
+                </div>
+              </div>
+              {% if solutions.dryer.size == 'SM' or solutions.dryer.version == 'SI' %}
+                <div class="media text-muted pt-2">
+                  <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+                  <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                      <strong class="text-gray-dark">Area of air outlet:</strong>
+                      {{ solutions.chimney_area|floatformat:"-3" }} m&sup2;
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+              {% if solutions.dryer.version == 'IM' %}
+                <div class="media text-muted pt-2">
+                  <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+                  <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                      <strong class="text-gray-dark">Area of collector:</strong>
+                      {{ solutions.improved_area|floatformat:"-3" }} m&sup2;
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+              {% if solutions.dryer.size == 'LA' %}
+              <div class="media text-muted pt-2">
+                <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
+                <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+                  <div class="d-flex justify-content-between align-items-center w-100">
+                    <strong class="text-gray-dark">Number of Chimneys:</strong>
+                    {{ solutions.chimneys }} chimney{{ solutions.chimneys|pluralize }}
+                  </div>
+                </div>
+              </div>
               {% endif %}
             </div>
-          </div>
-        </div>
-        <div class="media text-muted pt-2">
-          <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
-          <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
-            <div class="d-flex justify-content-between align-items-center w-100">
-              <strong class="text-gray-dark">Area of Drying Trays:</strong>
-              {{ solutions.surface_area|floatformat:"-3" }} square meters (m2)
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+              <h6 class="border-bottom border-gray pb-2 mb-0">Construction Notes:</h6>
+              {% for note in solutions.notes %}
+                {% if note.dryer == solutions.dryer %}
+                  <div class="media text-muted pt-2">
+                    <img data-src="holder.js/16x16?theme=thumb&amp;bg=d8587e&amp;fg=d8587e&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;">
+                    <p class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+                      {{ note.note }}
+                    </p>
+                  </div>
+                {% endif %}
+              {% empty %}
+                N/A
+              {% endfor %}
             </div>
-          </div>
-        </div>
-        {% if solutions.dryer.size == 'SM' or solutions.dryer.version == 'SI' %}
-          <div class="media text-muted pt-2">
-            <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
-            <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <strong class="text-gray-dark">Area of air outlet:</strong>
-                {{ solutions.chimney_area|floatformat:"-3" }} square meters (m2)
-              </div>
-            </div>
-          </div>
-        {% endif %}
-        {% if solutions.dryer.version == 'IM' %}
-          <div class="media text-muted pt-2">
-            <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
-            <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <strong class="text-gray-dark">Area of collector:</strong>
-                {{ solutions.improved_area|floatformat:"-3" }} square meters (m2)
-              </div>
-            </div>
-          </div>
-        {% endif %}
-        {% if solutions.dryer.size == 'LA' %}
-        <div class="media text-muted pt-2">
-          <img data-src="holder.js/16x16?theme=thumb&amp;bg=d88558&amp;fg=d88558&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;" >
-          <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
-            <div class="d-flex justify-content-between align-items-center w-100">
-              <strong class="text-gray-dark">Number of Chimneys:</strong>
-              {{ solutions.chimneys }} chimney(s)
-            </div>
-          </div>
-        </div>
-        {% endif %}
-      </div>
-      <div class="my-3 p-3 bg-white rounded box-shadow">
-        <h6 class="border-bottom border-gray pb-2 mb-0">Construction Notes:</h6>
-        {% for note in solutions.notes %}
-          {% if note.dryer == solutions.dryer %}
-            <div class="media text-muted pt-2">
-              <img data-src="holder.js/16x16?theme=thumb&amp;bg=d8587e&amp;fg=d8587e&amp;size=1" alt="16X16" class="mr-2 rounded" style="width: 16px; height: 16px;">
-              <p class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
-                {{ note.note }}
-              </p>
-            </div>
-          {% endif %}
-        {% empty %}
-          N/A
-        {% endfor %}
-      </div>
-      {% if solutions.dryer.construct or solutions.dryer.variation %}
-        <div style = "display:block; clear:both; page-break-after:always;"></div>
-        <div class="my-3 p-5 bg-white rounded box-shadow">
-          {% if solutions.dryer.construct %}
-            <h6 class="border-bottom border-gray pb-2 mb-0">Example of Constructed {{ solutions.dryer }}</h6>
-            <figure class="figure">
-              <img src="{{ dryer_serializer.construct }}" class="figure-img img-fluid rounded" alt="">
-            </figure>
-          {% endif %}
-          {% if solutions.dryer.variation %}
-            {% if solutions.dryer.size == 'LA' and solutions.dryer.version == 'SI' %}
+            {% if solutions.dryer.construct or solutions.dryer.variation %}
               <div style = "display:block; clear:both; page-break-after:always;"></div>
+              {% if solutions.dryer.construct %}
+                <div class="my-3 p-5 bg-white rounded box-shadow">
+                  <h6 class="border-bottom border-gray pb-2 mb-0">Example of Constructed {{ solutions.dryer }}</h6>
+                  <figure class="figure">
+                    <img src="{{ dryer_serializer.construct }}" class="figure-img img-fluid rounded" alt="">
+                  </figure>
+                </div>
+              {% endif %}
+              {% if solutions.dryer.variation %}
+                  {% if solutions.dryer.size == 'LA' and solutions.dryer.version == 'SI' %}
+                    <div style = "display:block; clear:both; page-break-after:always;"></div>
+                  {% endif %}
+                  <div class="my-3 p-5 bg-white rounded box-shadow">
+                  <h6 class="border-bottom border-gray pb-2 mb-0">Possible Design Variations</h6>
+                  <figure class="figure">
+                    <img src="{{ dryer_serializer.variation }}" class="figure-img img-fluid rounded" alt="">
+                    <figcaption class="figure-caption"><p class="h7 text-center">{{ solutions.dryer }} Variations<p></figcaption>
+                  </figure>
+                </div>
+              {% endif %}
             {% endif %}
-            <h6 class="border-bottom border-gray pb-2 mb-0">Possible Design Variations</h6>
-            <figure class="figure">
-              <img src="{{ dryer_serializer.variation }}" class="figure-img img-fluid rounded" alt="">
-              <figcaption class="figure-caption"><p class="h7 text-center">{{ solutions.dryer }} Variations<p></figcaption>
-            </figure>
+            <div style = "display:block; clear:both; page-break-after:always;"></div>
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col">Units</th>
+                  <th scope="col">Symbol</th>
+                  <th scope="col">Value</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <th scope="row">airflow requirements</th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <th scope="row">temperature diff</th>
+                  <td></td>
+                  <th scope="row">&#916;T</th>
+                  <th scope="row">{{ solutions.temperature_diff|floatformat:"-3" }}</th>
+                </tr>
+                {% for coefficient in solutions.coefficients %}
+                  {% if coefficient.equation == 'airflow' %}
+                    <tr>
+                      <td></td>
+                      <td>{{ coefficient.coefficient }}</td>
+                      <td>{{ coefficient.units|safe }}</td>
+                      <td>{{ coefficient.symbol|safe }}</td>
+                      <td>{{ coefficient.equivalent }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor%}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <th scope="row">moisture to be removed from {{ solutions.crop.name }}</th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <th scope="row">mass of moisture to be removed</th>
+                  <th scope="row">Kilograms (Kg)</th>
+                  <th scope="row">M<sub>w</sub></th>
+                  <th scope="row">{{ solutions.moisture|floatformat:"-3" }}</th>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>initial mass of material to dry</td>
+                  <td>Kilograms (Kg)</td>
+                  <td>W<sub>w</sub></td>
+                  <td>{{ solutions.mass }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>initial moisture wet basis</td>
+                  <td>Percentage (%)</td>
+                  <td>M<sub>iwb</sub></td>
+                  <td>{{ solutions.crop.initial_moisture }} %</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>final moisture wet basis</td>
+                  <td>Percentage (%)</td>
+                  <td>M<sub>fwb</sub></td>
+                  <td>{{ solutions.crop.final_moisture }} %</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <th scope="row">volume of air required to remove the moisture</th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>volume of air required</td>
+                  <td>Cubic Meters (m&sup3;)</td>
+                  <td>V<sub>A</sub></td>
+                  <td>{{ solutions.air_volume|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>temp of air leaving dry bed in degrees</td>
+                  <td>Degrees Celsius (&#8451;)</td>
+                  <td></td>
+                  <td>{{ solutions.tf_deg|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>temp air leaving dry bed in kelvins</td>
+                  <td>Kelvins (K)</td>
+                  <td>T<sub>f</sub></td>
+                  <td>{{ solutions.tf|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>ambient temp in degrees</td>
+                  <td>Degrees Celsius (&#8451;)</td>
+                  <td></td>
+                  <td>{{ solutions.temp|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>ambient temp in kelvins</td>
+                  <td>Kelvins (K)</td>
+                  <td>T<sub>a</sub></td>
+                  <td>{{solutions.ta|floatformat:"-3"}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>temp air leaving air heater in degrees = T<sub>a</sub> + ΔT</td>
+                  <td>Degrees Celsius (&#8451;)</td>
+                  <td></td>
+                  <td>{{ solutions.tt|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>temp air leaving air heater in kelvins</td>
+                  <td>Kelvins (K)</td>
+                  <td>T<sub>o</sub></td>
+                  <td>{{ solutions.to|floatformat:"-3" }}</td>
+                </tr>
+                {% for coefficient in solutions.coefficients %}
+                  {% if coefficient.equation == 'air volume' %}
+                    <tr>
+                      <td></td>
+                      <td>{{ coefficient.coefficient }}</td>
+                      <td>{{ coefficient.units|safe }}</td>
+                      <td>{{ coefficient.symbol|safe }}</td>
+                      <td>{{ coefficient.equivalent }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor%}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">##</th>
+                  <th scope="row">enthalpy of vaporization</th>
+                  <th scope="row"></th>
+                  <th scope="row">L<sub>t</sub></th>
+                  <th scope="row">{{ solutions.enthalpy }}</th>
+                </tr>
+                {% for coefficient in solutions.coefficients %}
+                  {% if coefficient.equation == 'vaporization' %}
+                    <tr>
+                      <td></td>
+                      <td>{{ coefficient.coefficient }}</td>
+                      <td>{{ coefficient.units|safe }}</td>
+                      <td>{{ coefficient.symbol|safe }}</td>
+                      <td>{{ coefficient.equivalent }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor%}
+                <tr>
+                  <td></td>
+                  <td>temperature of the product T<sub>pt</sub> = 0.25{3T<sub>o</sub>+T<sub>a</sub>}</td>
+                  <td>Degrees Celsius (&#8451;)</td>
+                  <td></td>
+                  <td>{{ solutions.tpt_deg|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>temp of product in kelvins</td>
+                  <td>Kelvins (K)</td>
+                  <td>T<sub>pt</sub></td>
+                  <td>{{ solutions.tpt|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <div style = "display:block; clear:both; page-break-after:always;"></div>
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col">Units</th>
+                  <th scope="col">Symbol</th>
+                  <th scope="col">Value</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">4</th>
+                  <th scope="row">volume flow rate (V<sub>a</sub>/t)</th>
+                  <th scope="row">Cubic meters per second (m&sup3;/s)</th>
+                  <th scope="row">V</th>
+                  <th scope="row">{{ solutions.volume_fr|floatformat:"-3" }}</th>
+                </tr>
+                <tr>
+                  <td></td>
+                  <th scope="row">mass flow rate (V*1.2)</th>
+                  <th scope="row">Kilograms per second (Kg/s)</th>
+                  <td></td>
+                  <td>{{ solutions.mass_fr|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>volume of air required to remove the moisture</td>
+                  <td>Cubic meters(m&sup3;)</td>
+                  <td>V<sub>A</sub></td>
+                  <td>{{ solutions.air_volume|floatformat:"-3" }}</td>
+                </tr>
+                {% for coefficient in solutions.coefficients %}
+                  {% if coefficient.equation == 'flow rate' %}
+                    <tr>
+                      <td></td>
+                      <td>{{ coefficient.coefficient }}</td>
+                      <td>{{ coefficient.units|safe }}</td>
+                      <td>{{ coefficient.symbol|safe }}</td>
+                      <td>{{ coefficient.equivalent }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor%}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">5</th>
+                  <th scope="row">area for collecting solar energy</th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                </tr>
+                <tr>
+                  <th scope="row"></th>
+                  <th scope="row">collector area</th>
+                  <th scope="row">Square meters (m&sup2;)</th>
+                  <th scope="row"></th>
+                  <th scope="row">{{ solutions.area|floatformat:"-3" }}</th>
+                </tr>
+                {% for coefficient in solutions.coefficients %}
+                  {% if coefficient.equation == 'collector area' %}
+                    <tr>
+                      <td></td>
+                      <td>{{ coefficient.coefficient }}</td>
+                      <td>{{ coefficient.units|safe }}</td>
+                      <td>{{ coefficient.symbol|safe }}</td>
+                      <td>{{ coefficient.equivalent }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor%}
+                <tr>
+                  <td></td>
+                  <td>mass of moisture to be removed</td>
+                  <td>Kilograms (Kg)</td>
+                  <td>M<sub>w</sub></td>
+                  <td>{{ solutions.mw }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>latent heat of vaporization</td>
+                  <td>Joules per Kilogram (J/Kg)</td>
+                  <td>L<sub>t</sub></td>
+                  <td>{{ solutions.enthalpy }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>area of drying chamber in case of improved dryer</td>
+                  <td>Square meters (m&sup2;)</td>
+                  <td></td>
+                  <td>{{ solutions.improved_area|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">6</th>
+                  <th scope="row">chimneys</th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                </tr>
+                <tr>
+                  <th scope="row"></th>
+                  <th scope="row">number of chimneys</th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                  <th scope="row">{{ solutions.cn }}</th>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>average velocity at exit of chimney</td>
+                  <td>Meters per second (m/s)</td>
+                  <td>V<sub>c</sub></td>
+                  <td>{{ solutions.vc|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>volume flow rate</td>
+                  <td>Cubic meters per second (m&sup3;/s)</td>
+                  <td>V</td>
+                  <td>{{ solutions.volume_fr|floatformat:"-3" }}</td>
+                </tr>
+                {% for coefficient in solutions.coefficients %}
+                  {% if coefficient.equation == 'chimney' %}
+                    <tr>
+                      <td></td>
+                      <td>{{ coefficient.coefficient }}</td>
+                      <td>{{ coefficient.units|safe }}</td>
+                      <td>{{ coefficient.symbol|safe }}</td>
+                      <td>{{ coefficient.equivalent }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor%}
+                <tr>
+                  <td></td>
+                  <td>total area of chimneys</td>
+                  <td>Square meters (m&sup2;)</td>
+                  <td></td>
+                  <td>{{ solutions.chimney_area|floatformat:"-3" }}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">7</th>
+                  <th scope="row">area of drying bed</th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                  <th scope="row"></th>
+                </tr>
+                <tr>
+                  <th scope="row"></th>
+                  <th scope="row">surface area of drying beds</th>
+                  <th scope="row">Square meters (m&sup2;)</th>
+                  <th scope="row">S<sub>a</sub></th>
+                  <th scope="row">{{ solutions.surface_area|floatformat:"-3" }}</th>
+                </tr>
+                <tr>
+                  <th scope="row"></th>
+                  <th scope="row">loading density</th>
+                  <th scope="row">Kilograms per meter square (Kg/m&sup2;)</th>
+                  <th scope="row"></th>
+                  <th scope="row">{{ solutions.density|floatformat:"-3" }}</th>
+                </tr>
+                {% for coefficient in solutions.coefficients %}
+                  {% if coefficient.equation == 'drying bed' %}
+                    <tr>
+                      <td></td>
+                      <td>{{ coefficient.coefficient }}</td>
+                      <td>{{ coefficient.units|safe }}</td>
+                      <td>{{ coefficient.symbol|safe }}</td>
+                      <td>{{ coefficient.equivalent }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor%}
+                <tr>
+                  <td></td>
+                  <td>bulk density of {{ solutions.crop.name }}</td>
+                  <td>Kilograms per cubic meter (Kg/m&sup3)</td>
+                  <td></td>
+                  <td>{{ solutions.crop.bulk_density }}</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
           {% endif %}
-        </div>
-      {% endif %}
-    </main>
-  {% endif %}
-      {% endif %}
+        {% endif %}
       {% endfor %}
+    </main>
   </body>
 {% endblock content %}

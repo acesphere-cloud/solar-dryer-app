@@ -287,5 +287,5 @@ CORS_URLS_REGEX = r"^/api/.*$"
 
 # Weather Data API
 # ------------------------------------------------------------------------------
-# https://django-allauth.readthedocs.io/en/latest/configuration.htmlK7AYGXDEFGF93B5CQHHVV3J4R
-WEATHER_DATA_API_KEY = env("VISUAL_CROSSING_API_KEY", default='749FH9FNGAG3H4MENDB5PSLQB')
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+WEATHER_DATA_API_KEY = env("VISUAL_CROSSING_API_KEY", default='K7AYGXDEFGF93B5CQHHVV3J4R')
