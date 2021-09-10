@@ -1,6 +1,8 @@
 from django import forms
 from django.core.validators import MinValueValidator
-from django.core.exceptions import ValidationError
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field, Submit
+from crispy_forms.bootstrap import AppendedText
 
 from .models import Crop, Coefficient
 from agriceng.solardryers.models import Dryer
@@ -46,12 +48,24 @@ class AreaForm(forms.Form):
     )
     location = forms.CharField(
         max_length=64,
-        help_text="Location of the solar dryer",
+        help_text="Location of Solar Dryer",
     )
     mass = forms.FloatField(
         help_text="Initial mass of material to dry in kilograms",
         validators=[MinValueValidator(0.1, message="The mass of crop has to be at least 100 grams (0.1 kg)")]
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.layout = Layout(
+            'crop',
+            Field('location', placeholder="Type in your nearest location"),
+            AppendedText('mass', '㎏', placeholder="Mass of crop to be dried"),
+        )
+
+        self.helper.add_input(Submit('generate-dryer', 'Design Dryer', css_class='btn-info'))
 
 
 dryerset = Dryer.objects.all()
@@ -62,17 +76,16 @@ class PDFForm(forms.Form):
     prefix = 'pdf'
     solar_dryer = forms.ModelChoiceField(
         queryset=dryerset,
-        empty_label=">>Preferred Solar Dryer<<",
+        empty_label="⛶ Choose your most preferred Solar Dryer ⛶",
         help_text="To generate PDF report, select your preferred solar dryer.",
     )
     context = forms.JSONField(
         widget=forms.HiddenInput
     )
 
-    def clean_solar_dryer(self):
-        data = self.cleaned_data['solar_dryer']
-        if not data:
-            raise ValidationError('Select preferred solar dryer from the menu')
-        return data
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_errors = False
 
-
+        self.helper.add_input(Submit('generate-pdf', 'Generate PDF Report', css_class='btn-info'))

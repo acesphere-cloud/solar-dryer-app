@@ -6,13 +6,9 @@
 {% block title %}Solar Dryer Design{% endblock %}
 
 {% block content %}
-  <h2>Generate Solar Dryer Design Specifications</h2>
+  <h2>Generate Solar Dryer Design Specifications</h2><br/>
   <form class="form-vertical" method="post" action="{% url 'area:solar_dryer' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-info" name="generate-dryer">Design Dryer</button>
-    </div>
+    {% crispy form %}
     <br/>
   </form>
   {% if solutions.mass %}
@@ -96,11 +92,7 @@
       {% endif %}
       <div class="row">
         <form class="col form-vertical" method="post" action="{% url 'area:solar_dryer' %}">
-          {% csrf_token %}
-          {{ pdf_form|crispy }}
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-info" name="generate-report">Generate Report</button>
-          </div>
+          {% crispy pdf_form %}
           <br/>
         </form>
       </div>

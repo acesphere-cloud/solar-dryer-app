@@ -127,7 +127,19 @@ INSTALLED_APPS += ["anymail"]  # noqa F405
 # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
 # https://anymail.readthedocs.io/en/stable/esps/amazon_ses/
 EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
-ANYMAIL = {}
+ANYMAIL = {
+    "AMAZON_SES_CLIENT_PARAMS": {
+        # example: override normal Boto credentials specifically for Anymail
+        "aws_access_key_id": env("DJANGO_AWS_ACCESS_KEY_ID"),
+        "aws_secret_access_key": env("DJANGO_AWS_SECRET_ACCESS_KEY"),
+        "region_name": env("DJANGO_AWS_DEFAULT_REGION", default=None),
+        # override other default options
+        "config": {
+            "connect_timeout": 30,
+            "read_timeout": 30,
+        }
+    },
+}
 
 # Collectfast
 # ------------------------------------------------------------------------------

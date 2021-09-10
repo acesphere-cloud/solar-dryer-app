@@ -173,6 +173,7 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         }
 
         pdf_form = PDFForm(data=pdf_data)
+        pdf_form['solar_dryer'].errors.clear()
         return self.render_to_response(self.get_context_data(
             form=form,
             solutions=solutions,

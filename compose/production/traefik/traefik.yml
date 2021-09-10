@@ -44,6 +44,13 @@ http:
       # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
       headers:
         hostsProxyHeaders: ["X-CSRFToken"]
+    proxy:
+      # https://doc.traefik.io/traefik/middlewares/http/headers/#sslproxyheaders
+      headers:
+        sslProxyHeaders:
+          X-Forwarded-Host: prod-dryer.agriceng.cloud
+
+
 
   services:
     django:
