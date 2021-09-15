@@ -31,8 +31,7 @@ http:
       rule: "Host(`agriceng.cloud`) || Host(`www.agriceng.cloud`)"
       entryPoints:
         - web-secure
-      middlewares:
-        - csrf
+      middlewares:        - csrf
       service: django
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver

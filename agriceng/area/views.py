@@ -6,6 +6,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import FormView
 from rest_framework.renderers import JSONRenderer
 from wkhtmltopdf.views import PDFTemplateResponse
+from paypal.standard.forms import PayPalPaymentsForm
 
 from .models import Crop, Coefficient
 from .api.serializers import CropSerializer
@@ -43,8 +44,6 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         """Insert the form into the context dict."""
         if 'form' not in kwargs:
             kwargs['form'] = self.get_form(form_class=AreaForm)
-        if 'pdf_form'not in kwargs:
-            kwargs['pdf_form'] = self.get_form(form_class=PDFForm)
         return kwargs
 
     def get_cmd_options(self):
@@ -171,13 +170,31 @@ class SolarDryerView(LocationWeatherMixin, FormView):
         pdf_data = {
             'pdf-context': pdf_context,
         }
-
-        pdf_form = PDFForm(data=pdf_data)
+        if mass < 200:
+            size = Dryer.SMALL
+        else:
+            size = Dryer.LARGE
+        pdf_form = PDFForm(size, data=pdf_data)
+        # Clear required solar_dryer field error in the bound form
         pdf_form['solar_dryer'].errors.clear()
+
+        # PayPal donate-specific settings
+        paypal_dict = {
+            "cmd": "_donations",
+            "business": 'info@agriceng.cloud',
+            "item_name": "'Solar Dryer App Donation",
+            "notify_url": "https://3f00-197-254-121-98.ngrok.io/paypal/",
+            "return": "https://3f00-197-254-121-98.ngrok.io/paypal/",
+            "cancel_return": "https://3f00-197-254-121-98.ngrok.io/paypal/",
+        }
+        # Create a PayPal Payments Standard "Donate" button
+        payment = PayPalPaymentsForm(button_type='donate', initial=paypal_dict)
+
         return self.render_to_response(self.get_context_data(
             form=form,
             solutions=solutions,
             pdf_form=pdf_form,
+            payment=payment,
         ))
 
     def post(self, request, *args, **kwargs):

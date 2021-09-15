@@ -72,6 +72,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "wkhtmltopdf",
+    "paypal.standard.ipn",
 ]
 
 LOCAL_APPS = [
@@ -79,6 +80,7 @@ LOCAL_APPS = [
     "agriceng.weatherdata.apps.WeatherDataConfig",
     "agriceng.solardryers.apps.SolarDryerConfig",
     "agriceng.area.apps.AreaConfig",
+    "agriceng.payment.apps.PaymentConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -289,3 +291,4 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # ------------------------------------------------------------------------------
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 WEATHER_DATA_API_KEY = env("VISUAL_CROSSING_API_KEY", default='K7AYGXDEFGF93B5CQHHVV3J4R')
+

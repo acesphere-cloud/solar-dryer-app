@@ -11,7 +11,7 @@ SECRET_KEY = env(
     default="pNmc9XsiuKAbVtywrBGkrDLx185PW6cN1fwYlvnNMeIscA1eCHlDQ8otGuMFIM2n",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "3f00-197-254-121-98.ngrok.io"]
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -54,5 +54,7 @@ if env("USE_DOCKER") == "yes":
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
 INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
-# Your stuff...
-# ------------------------------------------------------------------------------
+# PayPal
+# -------------------------------------------------------------------------------
+# paypal sandbox
+PAYPAL_TEST = True

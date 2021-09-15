@@ -43,12 +43,12 @@ class AreaForm(forms.Form):
     """ Form for handling user input data"""
     crop = forms.ModelChoiceField(
         queryset=queryset,
-        empty_label="Name of Crop",
+        empty_label="Name of crop:",
         help_text="Determines bulk density, initial and final moisture content",
     )
     location = forms.CharField(
-        max_length=64,
         help_text="Location of Solar Dryer",
+        max_length=64,
     )
     mass = forms.FloatField(
         help_text="Initial mass of material to dry in kilograms",
@@ -59,33 +59,31 @@ class AreaForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
+        self.helper.field_class = 'mb-4'
         self.helper.layout = Layout(
             'crop',
-            Field('location', placeholder="Type in your nearest location"),
-            AppendedText('mass', '㎏', placeholder="Mass of crop to be dried"),
+            Field('location', placeholder="Type in your nearest location:"),
+            AppendedText('mass', '㎏', placeholder="Mass of crop to be dried:"),
         )
-
-        self.helper.add_input(Submit('generate-dryer', 'Design Dryer', css_class='btn-info'))
-
-
-dryerset = Dryer.objects.all()
+        self.helper.add_input(Submit('generate-dryer', 'Design Dryer', css_class='btn btn-primary'))
 
 
 class PDFForm(forms.Form):
     """Form for generating Solar Dryer PDFs"""
     prefix = 'pdf'
     solar_dryer = forms.ModelChoiceField(
-        queryset=dryerset,
-        empty_label="⛶ Choose your most preferred Solar Dryer ⛶",
-        help_text="To generate PDF report, select your preferred solar dryer.",
+        queryset=Dryer.objects.all(),
+        empty_label="⛶ Choose preferred Solar Dryer ⛶",
+        help_text="To generate PDF report, select your preferred solar dryer from the menu.",
     )
     context = forms.JSONField(
         widget=forms.HiddenInput
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, size=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if size:
+            self.fields['solar_dryer'].queryset = Dryer.objects.filter(size=size)
         self.helper = FormHelper()
-        self.helper.form_show_errors = False
-
+        self.helper.form_show_labels = False
         self.helper.add_input(Submit('generate-pdf', 'Generate PDF Report', css_class='btn-info'))
