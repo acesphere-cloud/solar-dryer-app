@@ -86,4 +86,4 @@ class PDFForm(forms.Form):
             self.fields['solar_dryer'].queryset = Dryer.objects.filter(size=size)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
-        self.helper.add_input(Submit('generate-pdf', 'Generate PDF Report', css_class='btn-info'))
+        self.helper.add_input(Submit('generate-pdf', 'Generate PDF Report', css_class='btn btn-primary'))

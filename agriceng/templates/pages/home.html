@@ -29,7 +29,7 @@
     </section>
     {% if solutions.mass %}
         {% if solutions.mass < 200 %}
-            <!-- Recommendation Grid-->
+            <!-- Small Dryer Recommendation Grid-->
             <section class="page-section portfolio bg-light" id="portfolio">
                 <div class="container">
                     <div class="text-center">
@@ -81,97 +81,95 @@
                                         </div>
                                     </div>
                                 {% endif %}
-                          {% endif %}
+                            {% endif %}
                         {% endfor %}
-
-
-
-
-
                     </div>
                 </div>
             </section>
-
-                    <div>
-                        {% for dryer in solutions.dryers %}
-                          {% if dryer.size == 'Small' %}
-                            {% if dryer.version == 'Simple' %}
-                              <div class="col align-self-start">
-                                <p class="lead"><strong>{{ dryer.size }} {{ dryer.version }} Dryer</strong></p>
-                                <p>Area of Drying Chamber: {{ solutions.area|floatformat:"-3" }} m&sup2;</p>
-                                <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
-                                <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3" }} m&sup2;</p>
-                                <figure class="figure">
-                                  <img src="{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
-                                  <figcaption class="figure-caption"><p class="h7">{{ dryer.size }} {{ dryer.version }} Dryer<p></figcaption>
-                                </figure>
-                              </div>
-                            {% endif %}
-                            {% if dryer.version == 'Improved' %}
-                              <div class="col align-self-start">
-                                <p class="lead"><strong>{{ dryer.size }} {{ dryer.version }} Dryer</strong></p>
-                                <p>Area of Drying Chamber: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
-                                <p>Area of collector: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
-                                <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
-                                <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3" }} m&sup2;</p>
-                                <figure class="figure">
-                                  <img src="{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
-                                  <figcaption class="figure-caption"><p class="h7">{{ dryer.size }} {{ dryer.version }} Dryer<p></figcaption>
-                                </figure>
-                              </div>
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-        {% if solutions.mass >= 200 %}
-          <div class="row">
-            <div class="col align-self-centre">
-              <strong>Below Large Dryers are recommended for drying {{ solutions.crop.name }} of {{ solutions.mass }} kg at
-                {{ solutions.location.address }}:</strong>
-            </div>
-            <div class="w-100"><br/></div>
-            {% for dryer in solutions.dryers %}
-              {% if dryer.size == 'Large' %}
-                {% if dryer.version == 'Simple' %}
-                  <div class="col align-self-start">
-                    <p class="lead"><strong>{{ dryer.size }} {{ dryer.version }} Dryer</strong></p>
-                    <p>Area of Drying Chamber: {{ solutions.area|floatformat:"-3" }} m&sup2;</p>
-                    <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3"}} m&sup2;</p>
-                    <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3"}} m&sup2;</p>
-                    <p>Number of Chimneys: {{ solutions.chimneys }} chimney{{ solutions.chimneys|pluralize }}</p>
-                    <figure class="figure">
-                      <img src="{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
-                      <figcaption class="figure-caption"><p class="h7">{{ dryer.size }} {{ dryer.version }} Dryer<p></figcaption>
-                    </figure>
-                  </div>
-                {% endif %}
-                {% if dryer.version == 'Improved' %}
-                  <div class="col align-self-start">
-                    <p class="lead"><strong>{{ dryer.size }} {{ dryer.version }} Dryer</strong></p>
-                    <p>Area of Drying Chamber: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
-                    <p>Area of collector: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
-                    <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
-                    <p>Number of Chimneys: {{ solutions.chimneys }} chimney{{ solutions.chimneys|pluralize }}</p>
-                    <figure class="figure">
-                      <img src="{{ dryer.diagram }}" class="figure-img img-fluid rounded" alt="">
-                      <figcaption class="figure-caption"><p class="h7">{{ dryer.size }} {{ dryer.version }} Dryer<p></figcaption>
-                    </figure>
-                  </div>
-                {% endif %}
-              {% endif %}
-            {% endfor %}
-          </div>
         {% endif %}
-        <div class="row">
-          <form class="col form-vertical" method="post" action="{% url 'area:solar_dryer' %}">
-            {% crispy pdf_form %}
-            <br/>
-          </form>
-        </div>
+        {% if solutions.mass >= 200 %}
+            <!-- Large Dryer Recommendation Grid-->
+            <section class="page-section portfolio bg-light" id="portfolio">
+                <div class="container">
+                    <div class="text-center">
+                    <!-- Recommended Dryer Section Heading-->
+                    <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Large Dryer Recommended</h2>
+                    <!-- Icon Divider-->
+                    <div class="divider-custom">
+                        <div class="divider-custom-line"></div>
+                        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                        <div class="divider-custom-line"></div>
+                    </div>
+                    <!-- Recommendation Section Content-->
+                    <div class="row" ms-auto">
+                        <p class="lead">Below Large Dryers are recommended for drying {{ solutions.crop.name }} of {{ solutions.mass }} kg at {{ solutions.location.address }}:</p>
+                    </div>
+                    <!-- Portfolio Grid Items-->
+                    <div class="row justify-content-center">
+                        {% for dryer in solutions.dryers %}
+                            {% if dryer.size == 'Large' %}
+                                {% if dryer.version == 'Simple' %}
+                                    <div class="col-md-6 col-lg-4 mb-5">
+                                        <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#{{dryer.size}}-{{dryer.version}}-Modal">
+                                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                                <div class="portfolio-item-caption-content text-center text-white">
+                                                    <i class="fas fa-plus fa-3x"></i>
+                                                    <p> {{ dryer.size }} {{ dryer.version }} Dryer </p>
+                                                </div>
+                                            </div>
+                                            <img class="img-fluid" src="{{ dryer.diagram }}" alt="..." />
+                                            <div class="portfolio-item-caption-content text-center bg-white">
+                                                <p class="lead"> {{ dryer.size }} {{ dryer.version }} Dryer </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if dryer.version == 'Improved' %}
+                                    <div class="col-md-6 col-lg-4 mb-5">
+                                        <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#{{dryer.size}}-{{dryer.version}}-Modal">
+                                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                                <div class="portfolio-item-caption-content text-center text-white">
+                                                    <i class="fas fa-plus fa-3x"></i>
+                                                    <p> {{ dryer.size }} {{ dryer.version }} Dryer </p>
+                                                </div>
+                                            </div>
+                                            <img class="img-fluid" src="{{ dryer.diagram }}" alt="..." />
+                                            <div class="portfolio-item-caption-content text-center bg-white">
+                                                <p class="lead"> {{ dryer.size }} {{ dryer.version }} Dryer </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+        <!-- PDF Section-->
+        <section class="masthead text-center" id="report">
+            <div class="container">
+                <!-- PDF Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Solar Dryer PDF Report</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- PDF Section Form-->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-xl-7">
+                        <form class="form-vertical" method="post" action="{% url 'area:solar_dryer' %}">
+                            {% crispy pdf_form %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         {% if payment %}
         {% endif %}
-      </div>
     {% endif %}
     <!-- Dryer Modals-->
     {% for dryer in solutions.dryers %}
@@ -200,7 +198,7 @@
                                                 <p>Area of Drying Chamber: {{ solutions.area|floatformat:"-3" }} m&sup2;</p>
                                                 <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
                                                 <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3" }} m&sup2;</p>
-                                            <button class="btn btn-primary" href="#!" data-bs-dismiss="modal">
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">
                                                 <i class="fas fa-times fa-fw"></i>
                                                 Close Window
                                             </button>
@@ -237,7 +235,7 @@
                                                 <p>Area of collector: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
                                                 <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
                                                 <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3" }} m&sup2;</p>
-                                            <button class="btn btn-primary" href="#!" data-bs-dismiss="modal">
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">
                                                 <i class="fas fa-times fa-fw"></i>
                                                 Close Window
                                             </button>
@@ -248,11 +246,83 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
-{% endif %}
-                          {% endif %}
-                        {% endfor %}
+            {% endif %}
+        {% endif %}
+        {% if dryer.size == 'Large' %}
+            {% if dryer.version == 'Simple' %}
+                <!-- {{ dryer.size }} {{ dryer.version }} Modal -->
+                <div class="portfolio-modal modal fade" id="{{dryer.size}}-{{dryer.version}}-Modal" tabindex="-1" aria-labelledby="{{dryer.size}}-{{dryer.version}}-Modal" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                            <div class="modal-body text-center pb-5">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-8">
+                                            <!-- Portfolio Modal - Title-->
+                                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{ dryer.size }} {{ dryer.version }} Dryer</h2>
+                                            <!-- Icon Divider-->
+                                            <div class="divider-custom">
+                                                <div class="divider-custom-line"></div>
+                                                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                                                <div class="divider-custom-line"></div>
+                                            </div>
+                                            <!-- Portfolio Modal - Image-->
+                                            <img class="img-fluid rounded mb-5" src="{{ dryer.diagram }}" alt="..." />
+                                            <!-- Portfolio Modal - Text-->
+                                                <p>Area of Drying Chamber: {{ solutions.area|floatformat:"-3" }} m&sup2;</p>
+                                                <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3"}} m&sup2;</p>
+                                                <p>Area of air outlet: {{ solutions.chimney_area|floatformat:"-3"}} m&sup2;</p>
+                                                <p>Number of Chimneys: {{ solutions.chimneys }} chimney{{ solutions.chimneys|pluralize }}</p>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">
+                                                <i class="fas fa-times fa-fw"></i>
+                                                Close Window
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if dryer.version == 'Improved' %}
+                <!-- {{ dryer.size }} {{ dryer.version }} Modal -->
+                <div class="portfolio-modal modal fade" id="{{dryer.size}}-{{dryer.version}}-Modal" tabindex="-1" aria-labelledby="{{dryer.size}}-{{dryer.version}}-Modal" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                            <div class="modal-body text-center pb-5">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-8">
+                                            <!-- Portfolio Modal - Title-->
+                                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">{{ dryer.size }} {{ dryer.version }} Dryer</h2>
+                                            <!-- Icon Divider-->
+                                            <div class="divider-custom">
+                                                <div class="divider-custom-line"></div>
+                                                <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                                                <div class="divider-custom-line"></div>
+                                            </div>
+                                            <!-- Portfolio Modal - Image-->
+                                            <img class="img-fluid rounded mb-5" src="{{ dryer.diagram }}" alt="..." />
+                                            <!-- Portfolio Modal - Text-->
+                                                <p>Area of Drying Chamber: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
+                                                <p>Area of collector: {{ solutions.improved_area|floatformat:"-3" }} m&sup2;</p>
+                                                <p>Area of Drying Trays: {{ solutions.surface_area|floatformat:"-3" }} m&sup2;</p>
+                                                <p>Number of Chimneys: {{ solutions.chimneys }} chimney{{ solutions.chimneys|pluralize }}</p>
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">
+                                                <i class="fas fa-times fa-fw"></i>
+                                                Close Window
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
 {% endblock content %}

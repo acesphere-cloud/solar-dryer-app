@@ -20,14 +20,14 @@
               </a>
               <div class="lh-100">
                 <h4 class="mb-0 text-white lh-100">{{ solutions.dryer }} Report for {{ solutions.crop.name }}</h4>
-                <small>Address: {{ solutions.location.address }}</small><br/>
-                <small>Area Coordinates:
+                <h10 class="mb-0 text-white lh-100">Address: {{ solutions.location.address }}</h10><br/>
+                <h10 class="mb-0 text-white lh-100">Area Coordinates:
                   <a href="https://www.google.com/maps/search/?api=1&query={{solutions.location.latitude}}%20%20{{solutions.location.longitude}}" target="_blank">
                     {{solutions.location.latitude}},{{solutions.location.longitude}}
                   </a>
-                </small><br/>
-                <small>Average Temperature: {{ solutions.temp|floatformat:"-1" }} &#8451;</small><br/>
-                <small>Average Wind Speed: {{ solutions.wspd|floatformat:"-1" }} kph</small>
+                </h10><br/>
+                <h10 class="mb-0 text-white lh-100">Average Temperature: {{ solutions.temp|floatformat:"-1" }} &#8451;</h10><br/>
+                <h10 class="mb-0 text-white lh-100">Average Wind Speed: {{ solutions.wspd|floatformat:"-1" }} kph</h10>
               </div>
             </div>
             <div class="my-3 p-3 bg-white rounded box-shadow">
